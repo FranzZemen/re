@@ -1,5 +1,5 @@
 import {HasRefName} from '@franzzemen/re-common';
-
+/*
 export enum UnaryHint {
   re = 're',
   ap = 'ap',
@@ -10,3 +10,4 @@ export enum UnaryHint {
 export interface HasUnaryHint extends HasRefName {
   unaryHint: UnaryHint | string;
 }
+*/

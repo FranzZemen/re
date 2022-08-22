@@ -1,36 +1,38 @@
-import {ExecutionContextI, Hints, LoggerAdapter} from '@franzzemen/app-utility';
-import {ApplicationParser} from '../../application/parser/application-parser';
-import {ApplicationReference} from '../../application/application-reference';
-import {HintKey} from '../../hint-key';
-import {ReferenceType} from '../../optioned-reference';
-import {Options} from '../../options';
-import {RuleContainerParser} from '../../rule-container-parser/rule-container-parser';
-import {ScopeKey} from '../../../../../re-common/ts-src/scope/scope-key';
-import {ScopeType} from '../../scope-type';
-import {RulesEngineReference} from '../rules-engine-reference';
+import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
+import {ApplicationParser, ApplicationReference} from '@franzzemen/re-application';
+import {Scope} from '@franzzemen/re-common';
+import {RuleContainerParser} from '@franzzemen/re-rule';
+import {ReReference} from '../re-reference';
+import {ReOptions} from '../scope/re-options';
+import {ReScope} from '../scope/re-scope';
+import {ReHintKey} from '../util/re-hint-key';
 
 
 const rulesEngineHintPrefix = 're';
 
 /**
- * The RulesEngineParser is used to parse entire rules engine repositories.  It is "the" top level parser.
+ * The ReParser is used to parse entire rules engine repositories.  It is "the" top level parser.
  */
-export class RulesEngineParser extends RuleContainerParser<RulesEngineReference> {
+export class ReParser extends RuleContainerParser<ReReference> {
 
   constructor() {
-    super(ScopeType.Global, HintKey.RulesEngine, []);
+    super(ReHintKey.RulesEngine, []);
   }
 
-  protected createReference(refName: string, options: Options): RulesEngineReference {
+
+  protected createScope(options: ReOptions | undefined, parentScope: Scope | undefined, ec: ExecutionContextI | undefined): Scope {
+    return new ReScope(options, parentScope, ec);
+  }
+
+  protected createReference(refName: string, options: ReOptions): ReReference {
     return {
-      type: ReferenceType.RulesEngine,
-      refName: 'Rules.Engine',
+      refName: 'Re.Engine',
       applications: [],
       options
     };
   }
 
-  protected delegateParsing(ref: RulesEngineReference, near: string, scope: Map<string,any>, ec?: ExecutionContextI): string {
+  protected delegateParsing(ref: ReReference, near: string, scope:ReScope, ec?: ExecutionContextI): string {
     const log = new LoggerAdapter(ec, 'rules-engine', 'rules-engine-parser', 'delegateParsing');
     let remaining = near;
     // The remaining text format must fully be digested by the remaining text, and pass in hints or returned hints from further down
@@ -57,11 +59,12 @@ export class RulesEngineParser extends RuleContainerParser<RulesEngineReference>
     }
   }
 
-  parseText(textFormat: string, ec?: ExecutionContextI): RulesEngineReference {
+  parseText(textFormat: string, ec?: ExecutionContextI): ReReference {
     let [,ref,] = this.parse(textFormat, undefined, ec);
     if(!ref) {
       ref = this.createReference(undefined, {});
     }
     return ref;
   }
+
 }

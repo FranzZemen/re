@@ -1,42 +1,42 @@
 // TODO:  Provide a way to remove custome elements and options
 
 import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
-import {Application, isApplication} from '../application/application';
-import {ApplicationReference} from '../application/application-reference';
-import {ApplicationParser} from '../application/parser/application-parser';
-import {isPromise} from '../../../../re-common/ts-src/util/is-promise';
-import {ReferenceType} from '../optioned-reference';
-import {Options} from '../options';
-import {RuleElementFactory} from '@franzzemen/re-common';
-import {RuleElementInstanceReference, RuleElementModuleReference} from '@franzzemen/re-common';
-import {RuleSet} from '../rule-set/rule-set';
-import {RuleParser} from '../rule/parser/rule-parser';
-import {possiblyARuleConstruct, Rule} from '../rule/rule';
-import {Scope} from '../scope';
-import {ScopeKey} from '../../../../re-common/ts-src/scope/scope-key';
-import {ScopeType} from '../scope-type';
-import {ApplicationResult, RuleResult, ValidationResults} from '../validation-result';
-import {RulesEngineParser} from './parser/rules-engine-parser';
-import {RulesEngineReference} from './rules-engine-reference';
+import {Application, ApplicationReference, ApplicationResult, isApplication} from '@franzzemen/re-application';
+import {
+  isPromise,
+  RuleElementFactory,
+  RuleElementInstanceReference,
+  RuleElementModuleReference,
+  Scope
+} from '@franzzemen/re-common';
+import {possiblyARuleConstruct, Rule, RuleParser, RuleResult} from '@franzzemen/re-rule';
+import {RuleSet} from '@franzzemen/re-rule-set';
+import {ReParser} from './parser/re-parser';
+import {ReReference} from './re-reference';
+import {ReOptions} from './scope/re-options';
+import {ReScope} from './scope/re-scope';
 
 
+export interface ReResult {
+  valid: boolean;
+  applicationResults: ApplicationResult[];
+}
 
 
-export class Rules extends RuleElementFactory<Application> {
-  static Engine = new Rules();
-  private scope: Scope;
+export class Re extends RuleElementFactory<Application> {
+  static Engine = new Re();
+  private scope: ReScope;
+  private options: ReOptions;
 
-  private constructor(options?: Options, ec?: ExecutionContextI) {
+  private constructor(options?: ReOptions, ec?: ExecutionContextI) {
     super();
     // The top level structural scope is type Global of name Global
-    this.scope = new Scope(ScopeType.Global, ScopeType.Global, undefined, ec);
-    if(options) {
-      this.setOptions(options, ec);
-    }
+    this.scope = new ReScope(options, undefined, ec);
+    this.options = options;
   }
 
-  to(ec?: ExecutionContextI) : RulesEngineReference {
-    const rulesEngineRef: RulesEngineReference = {type: ReferenceType.RulesEngine, refName: 'Rules.Engine', options: this.scope.get(ScopeKey.Options), applications: []};
+  to(ec?: ExecutionContextI) : ReReference {
+    const rulesEngineRef: ReReference = {refName: 'Re.Engine', options: this.options, applications: []};
     this.getApplications().forEach(application => rulesEngineRef.applications.push(application.to(ec)));
     return rulesEngineRef;
   }
@@ -45,9 +45,7 @@ export class Rules extends RuleElementFactory<Application> {
     return isApplication(obj);
   }
 
-  setOptions(options: Options, ec?: ExecutionContextI) {
-    this.scope.init(options, ec);
-  }
+
 
   getScope(): Map<string, any> {
     return this.scope;
@@ -87,11 +85,11 @@ export class Rules extends RuleElementFactory<Application> {
   }
 
   /**
-   * This method executes all the rules in the Rules Engine Scope
+   * This method executes all the rules in the Re Engine Scope
    * @param dataDomain
    * @param ec
    */
-  awaitExecution(dataDomain: any, ec?: ExecutionContextI): ValidationResults | Promise<ValidationResults> {
+  awaitExecution(dataDomain: any, ec?: ExecutionContextI): ReResult | Promise<ReResult> {
     const log = new LoggerAdapter(ec, 'rules-engine', 'rules', 'awaitExecution');
     const applicationResults: ApplicationResult[] = [];
     const applicationResultsPromises: Promise<ApplicationResult>[] = [];
@@ -180,7 +178,7 @@ export class Rules extends RuleElementFactory<Application> {
   }
 
 
-  load(schema: string, ec?: ExecutionContextI): Rules {
+  load(schema: string, ec?: ExecutionContextI): Re {
     return this.parseEngine(schema, ec);
   }
 
@@ -189,11 +187,9 @@ export class Rules extends RuleElementFactory<Application> {
    * @param ruleText
    * @param ec
    */
-  parseEngine(ruleText: string, ec?: ExecutionContextI): Rules {
-    const parser = new RulesEngineParser();
+  parseEngine(ruleText: string, ec?: ExecutionContextI): Re {
+    const parser = new ReParser();
     let ref = parser.parseText(ruleText, ec);
-    // TODO: Should we really reset options?
-    this.setOptions(ref.options, ec);
     ref.applications.forEach(appRef => this.addApplication(new Application(appRef, this.scope, ec)));
     return this;
   }

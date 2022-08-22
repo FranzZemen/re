@@ -1,6 +1,6 @@
 {
   "name": "@franzzemen/re",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,33 @@
   "bugs": {
     "url": "https://github.com/franzzemen/re/issues"
   },
-  "homepage": "https://github.com/franzzemen/re#readme"
+  "homepage": "https://github.com/franzzemen/re#readme",
+  "devDependencies": {
+    "@franzzemen/gulp-base": "^7.5.4",
+    "@franzzemen/npmu": "^1.2.10",
+    "@franzzemen/safe-config": "^2.0.45",
+    "@types/chai": "^4.3.3",
+    "@types/mocha": "^9.1.1",
+    "@types/object-path": "^0.11.1",
+    "@types/uuid": "^8.3.4",
+    "chai": "^4.3.6",
+    "gulp": "^4.0.2",
+    "gulp-mocha": "^8.0.0",
+    "mocha": "^10.0.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@franzzemen/re-application": "0.0.5",
+    "@franzzemen/re-common": "0.0.45",
+    "@franzzemen/re-condition": "0.0.13",
+    "@franzzemen/re-data-type": "0.0.24",
+    "@franzzemen/re-expression": "0.0.14",
+    "@franzzemen/re-logical-condition": "0.0.9",
+    "@franzzemen/re-rule": "0.0.6",
+    "@franzzemen/re-rule-set": "0.0.6",
+    "fastest-validator": "^1.13.0",
+    "moment": "^2.29.4",
+    "object-path": "^0.11.8",
+    "uuid": "^8.3.2"
+  }
 }
