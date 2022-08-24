@@ -34,5 +34,5 @@ by it:
     
 ## Contents
 
-[Quick Start](./quick-start/quick-start.md)
+[Quick Start](./quick-start/quick-start.md#quick-start)
 
