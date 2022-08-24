@@ -14,7 +14,7 @@ Suppose you have a stream of stock market equity objects of the shape:
 
 You desire to take some action if the ticker = "ZEM" and the price is greater than $5. You decide to externalize this
 decision, potentially to allow a user through UI to alter the ticker and/or price. Instead of writing custom code for
-that functionality alone, you will leverage the Rules Engine so you have a standardized externalized way of quickly
+that functionality alone, you will leverage the Rules Engine, so you have a standardized externalized way of quickly
 making critical business logic changes.
 
 You decide you need to know when the price is greater than 5.0 for a ticker called "ZEM". The rule you write for this
@@ -24,7 +24,7 @@ decision point is:
 
 The rule might be executed using the following API:
 
-    if(Rules.Engine.awaitRuleExecution(dataDomain, 'ticker = "ZEM" and price > 5.0')) {
+    if(Re.Engine.awaitRuleExecution(dataDomain, 'ticker = "ZEM" and price > 5.0')) {
         // log the result
     }
 
@@ -34,17 +34,37 @@ The rule might be executed using the following API:
     {ticker: "ZEM", price: 5.0} ---> invalid
     {ticker: "ZEM", price: 4.0} ---> invalid
 
-If you wanted to allow the user to vary the above rule parameters, you could provide a user interface to do so, but your
-surrounding code would not need to change. Your user interface could be as simple as allowing an advanced user to create
-entire rules, or vary only the parameters.
+You could parametrize the above, potentially linking the editing capability to a UI and allowing analysts to vary 
+the parameters themselves, or even allow them to build entirely new rules.
 
 The main advantage to this approach is that critical sequences of business logic can be programmed in an orderly manner
 once for any rule condition that may appear later. You are not changing the logic, just the decision criteria.
 
-## Introducing Whitespace
+Looking at our rule...
 
-It's worth describing how white space is used in rule constructs. In this section, we'll make liberal use of terms we
-haven't yet defined; we just want to focus on the conventions for whitespace, and we'll define unknown terms elsewhere.
+    ticker = "ZEM" and price > 5.0
+
+...you'll notice a few things that should be familiar.  First, it has two expressions, one comparing ticker and the 
+other price.  It also has a logical combination shown by the logical operator "and".  In other words, both 
+expressions must be true.  The rule makes use of comparators "=" and ">", and finally it seems to magically operate 
+on attributes "ticker" and "price".  
+
+In fact to the Rules Engine, this 'rule' contains a Logical Condition **_A and B_**, a Condition **_ticker = 
+"ZEM"_**, a Condition **_price > 5.0_**, and the Expressions **_ticker_**, **_"ZEM"_**, _**price**_ and **_5.0_**.  
+However, to you it was just a natural language format that you have seen likely many times.
+
+Some of the magic of this Rules Engine (beyond just being a rules engine) is that its _Text Format_ is very 
+English-like, and makes building rules intuitive.  Behind the scenes it parses the Text Format into more easily 
+manipulated formats.  More on that later; users of the Rules Engine will most likely deal predominantly with the 
+Text Format.
+
+## Introducing Whitespace and Other Formatting Concepts
+
+Give the primary use case involves the Text Format, it is worth describing up front how white space is used in rule 
+constructs, because with complex rules formatting becomes important to readability.
+
+In this section, we'll make liberal use of terms we haven't yet defined; we just want to focus on the conventions for 
+whitespace, and we'll define unknown terms elsewhere.
 
 Generally rules are described using text. In our documentation we show that text unquoted, for example:
 
@@ -62,13 +82,13 @@ need to escape them!
 Moreover, the Rules Engine accepts the common whitespace codes including the space, the tab, the newline and the
 carriage return, in any quantity. Where there is a limitation, the documentation will make that clear.
 
-For example, leveraging the multi-line quote in Typescript:
+For example, leveraging the multi-line quote in Typescript the rule can be written as:
 
     `ticker = "ZEM"
         and
      price > 5.0`
 
-Hints can also be multi-line and whitespace is allowed around the "=" symbol:
+Hints (to be defined elsewhere) can also be multi-line and whitespace is allowed around the "=" symbol:
 
     <<ex
       type = Attribute
@@ -79,9 +99,7 @@ Hints can also be multi-line and whitespace is allowed around the "=" symbol:
 
 Of course, one would use whitespace to make the rule more legible, unlike the contrived example above.
 
-As rules get more complex, leverage whitespace for legibility.
-
-## Introducing Conditions, Logical Conditions, Logical Operators and Comparators
+## Introducing Logical Conditions, Logical Operators, Conditions, Expressions, Comparators and Operators
 
 The above rule construct...
 
@@ -102,49 +120,91 @@ Returning to the rule construct, we break down the Logical Condition into two "C
     price > 5.0                     // A Condition
     ticker = "ZEM" and price > 5.0  // A Logical Condition
 
-A Condition is simply a rule construct that compares two expressions. In the first Condition above, "ticker" is an
-Expression, as is "ZEM". The "=" sign is a Comparator.
+Despite the naming similarities, Logical Conditions and Conditions are two separate things entirely.  A Logical 
+Condition is a construct that combines or excludes (and/or) other constructs, including itself.  For example, if A, 
+B, C, D and E are other constructs then..
 
-So it is accurate to say that a Condition is...
+    A or B and (C or D) and E 
+
+...is a Logical Condition.  Here, C might also be a Logical Condition, for example:
+
+    C:  F and not G
+
+making the first Logical Condition...
+
+    A or B and ((F and not G) or D) and E
+
+A Logical Condition, at run-time, always evaluates to either true or false.
+
+A Condition is a construct that is most of often contained in a Logical Condition and is simply a rule 
+construct that compares two expressions using a Comparator.  It is either true or false.  A Condition has a Right 
+Hand Side (RHS) and a Left Hand Side (LHS) Expression, so we say that a Condition is...
 
     A Left Hand Side Expression (LHS) Compared To A Right Hand Side Expression (RHS)
 
-Back to our Logical Condition...
+An Expression simply expresses data; it can however be as simple as a constant, as powerful as an attribute, or as 
+complex as a Formula or Function, among other things.
+
+In our rule...
 
     ticker = "ZEM" and price > 5.0
 
-... what if we wanted to make a trade for the ticker either the price was greater than 5.0 or the Price to Earnings
-Ratio (peRatio) was less than 10.0? A quick answer would be that we would leverage the Logical Operator "or":
+...there are 4 Expressions: 
 
-    ticker = "ZEM" and price > 5.0 or peRatio < 10.0       // WRONG!!!!
+- ticker
+- "ZEM"
+- price
+- 5.0
 
-That would be a mistake, because just as in many logical systems, intersection is resolved before union, meaning that
-the result of the "and" would be evaluated prior to considering the "or". That would mean that the rule would signal
-trade for the ticker "ZEM" with price > 5.0 or any ticker with peRatio < 10.0.
+Both ticker and price are known as Attribute Expressions, as they point to an attribute in the data domain.  "ZEM" 
+and 5.0 are Value Expressions as they have explicit constant values.  
 
-To solve for this, as with other systems, we introduce brackets to nest Logical Conditions:
+Virtually all the rules one will build will leverage Attribute and Value Expressions; they are the most common kind. 
+There are other types of Expressions, for example Function Expressions:
 
-    ticker = "ZEM" and (price > 5.0 or peRatio < 10.0)
+    @MultiplyInput[price, 0.5]
 
-You can use brackets to provide clarity (where they wouldn't matter either way) or to enforce the proper logical
-evaluation. You can nest to any depth. For example, and noting that we use symbols here for Conditions...
+This is a contrived Function Expression that behind the scenes invokes a function that multiplies price by 0.5 and 
+returns the result.  One thing to note here is that price and 0.5 are also Expressions.  In other words, advanced 
+Expressions can themselves contain Expressions.  Expressions have a universal construct to represent data that makes 
+them very convenient, even outside of Conditions themselves.
 
-    A and (B or (C and D)) 
+Another example of an Expression is a Formula Expression.  A simple example of a Formula Expresson is:
 
-Anything within brackets is a nested Logical Condition, so in the above we have three Logical Conditions:
+    @+[(price * 0.5)
 
-    C and D  // Result E
-    B or  E  // Result F
-    A and F  // Outer/topmost Logical Condition
+By coincidence does the exact same thing as the Function Expression, but is explicit about multiplying the price 
+Attribute Expression by the 0.5 Value Expression using the Operator "*".
 
-However, you really don't need to worry about inner/outer/nested Logical Conditions in writing rules. Just write them to
-make logical sense, using brackets as you would in any other system.
+In general operator oriented calculations are best expressed as Formula Expressions, while other calculations, even 
+asynchronous ones, are best expressed by Function Expressions.
+
+Let's blow your mind:
+
+    @+[@MultiplyInput[price, 0.5] * 2]
+
+Is a Formula Expression that operates on a Function Expression and Value Expression that leverages an attribute 
+Expression which itself leverages a Attribute Expression and a Value Expression.  All of this is legal in the Rules 
+Engine, and why we created the Text Format.  Just try and imagine what this would look like in JSON (actually, the 
+Rules Engine can convert this text to JSON).
+
+There are other, rarer types of Expressions that you may need, these are covered in detailed documentation on 
+Expressions.
 
 ## Introducing Data Types
 
-The Rules Engine constrains things to be compared by Data Types. In other words you can't directly compare text to a
-number (but there are implicit, explicit and functional conversions you can do to achieve an intended result,  
-more on that later). The available "standard" Data Types at this time are the obvious:
+The typed oriented engineers will realize there is a glaring omission in the previous section, and that is features 
+on data types.  In fact, data types are a first class concept in the Rules Engine.
+
+Data types drive several behaviors and features, most importantly that comparisons of Expressions are limited to 
+identical data types.  It makes little sense, without some form of explicit or implicit conversion to compare text to a 
+number.  
+
+The Rules Engine provides for the expected standard data types.  At the same time, basic data types are insufficient to 
+express and one of the powerful features of the Rules Engine is the ability to easily create and use more complex data 
+types.
+
+The basic or "standard" data types are:
 
 - Text
 - Number (integer)
@@ -153,48 +213,49 @@ more on that later). The available "standard" Data Types at this time are the ob
 - Date
 - Time
 - Timestamp
-- Unknown
 
-Note that the Unknown Data Type is a Data Type used by the Rules Engine when the overall Data Type is not inferrable
-during Rule inspection (non-runtime). The Rules Engine will (optionally) attempt to infer it at run time. This may or
-may not be desired; so the default behavior is that Unknown Data Types generate an error at inspection time and you need
-to supply an Option to enable its use.
+Because Expressions represent data, Expressions "have" a Data Type.
 
-You can (and probably will) create many more custom structured (object based) and unstructured (character based) Data
-Types, some of which you will want to contribute into the project, others of which will be proprietary to your own
-projects.  (Creating custom Data Types is beyond the scope of this Quick Start)
-
-In the Logical Condition of discussion...
+For example in our sample rule...
 
     ticker = "ZEM" and price > 5.0
 
-... we have two Data Types in play.
+...the Attribute and Value Expressions "ticker" and "ZEM" have a Data Type of Text, while the Attribute and 
+Value Expressions price and 5.0 have a Data Type of Float.
 
-First we have the Text Data Type, which is inferred because it is contained in double quotes. Are all double quoted text
-elements "Text"? No. The Rules Engine's inference logic decides when it is Text. Suffice it to say that some Data Types,
-such as Dates, are also expressed as text in double quotes, and they are inferred first. So more accurately the
-following statement is true:  Double quoted expressions are inferred as Text if they are not inferred as another Data
-Type first. This provides the ability to create unstructured data types in text format using double quotes, and ensuring
-that the Rules Engine doesn't infer them as Text.
+It may seem obvious why the Rules Engine implicitly knows the Data Type for Value Expressions such as "ZEM" and 5.0. 
+After all these are representations of text and floating point numbers.  It may seem less obvious how the Rules 
+Engine knows the same for the Attribute Expressions.  The answer is that within the first Condition, "ZEM" 
+constrains the Data Type to Text, and the Rules Engine infers the same Data Type for ticker.  Similarly, for the 
+second Condition.
 
-We also have a Float Data Type, because any literal number expressed with a decimal point is inferred to be a Float.
+If the Rules Engine can infer the Data Type, that is all that is needed.  Documentation on Data Types explains the 
+common literal formats for "standard" Data Types, but in this case suffice it to say that anything enclosed in 
+double quotes, for which there isn't a registered custom Data Type will always be inferred to be Text, and a 
+floating point number with a decimal will always be inferred as Float under the same conditions.
 
-Of course the Expressions "ticker" and "price" do not provide inferrable Data Types, but they are constrained to the
-Data Types of the Condition they are in. In other words, because "ticker" is compared to Text, it is assumed to be Text.
+What does it mean to say "there isn't a registered custom Data Type" in the above paragraph?  That's a little beyond 
+the scope of this introductory documentation, but as a teaser, let us say we created a Custom Data Type called Morse,
+represented by dashes '-' and underscores '_', enclosed in double quotes, for which there were unique patterns 
+(alphabet). Such a custom Data Type would be registered with the Rules Engine and it would know to infer it ahead of 
+Text where applicable.  Thus "--- ___ ---" which is the universal symbol of SOS in Morse would have a Data Type of 
+Morse, but "a-- ___ ---" would have a Data Type of Text.
 
+This concludes the Quick Start teaser.
+
+# TODO: MOVE THE REST OF THIS SOMEWHERE ELSE
+
+
+
+ 
 ## A Little More On Comparators
 
 We said that a Comparator compares two Expressions, and we said that the comparison must be along identical Data Types,
 or converted to identical Data Types in some manner.
 
 This implies that Comparators are bound to Data Types. In other words, for every Data Type, there is a list of usable
-Comparators. See the table below:
-
-TABLE TBD
-
-Of course, we said that we could easily create new Data Types. By extension, this means that we can (easily) create new
-Comparators for custom Data Types. In fact you can also create new Comparators for _existing_ Data Types if you like!
-
+Comparators.   This fact will be useful to remember if you create Custom Data Types, because in general you will 
+need to also create/register Comparators for that Data Type.
 ## Introducing Expression Types
 
 In our Logical Condition...
@@ -314,13 +375,13 @@ that would define stock.price as a literal value (assuming the user did not crea
 ## Introduction To The Rules API
 
 Writing rules is great, but we really want to run them. There are several objects that purposefully expose APIs.  
-Here we will focus on some key API of the Rules.Engine singleton.
+Here we will focus on some key API of the Re.Engine singleton.
 
 ### Execute a Rule
 
 There are many ways to execute rules, and we already saw one of them above:
 
-    Rules.Engine.awaitExecution(dataDomain, 'ticker = "ZEM" and price > 5.0')
+    Re.Engine.awaitExecution(dataDomain, 'ticker = "ZEM" and price > 5.0')
 
 This executes a specific rule expressed as text and returns the execution result.
 
@@ -331,10 +392,10 @@ The full Typescript signature of this API is:
 Meaning it is a function that takes 3 parameters, including one optional parameter, and returns either a Result
 (RuleResult) or a Promise to one.
 
-Any options set on the Rules.Engine are applied (and additional options can be included in the Rule text). The function
+Any options set on the Re.Engine are applied (and additional options can be included in the Rule text). The function
 itself does not accept Options.
 
-If the text passed doesn't correspond to rule constructs, the Rules.Engine will search its schema for a rule by that
+If the text passed doesn't correspond to rule constructs, the Re.Engine will search its schema for a rule by that
 textual name and execute the first instance it finds. Alternatively, if the text is a properly constructed rule it will
 compile and execute it, but it will not add it to the schema.
 
@@ -374,20 +435,20 @@ important feature is its logging definition.
 We will cover the Execution Context in more detail elsewhere. Suffice it to say for now that if it is omitted, the
 default implementation logger will be the console.
 
-### The Rules.Engine
+### The Re.Engine
 
-The Rules.Engine is a singleton of type Rules (plural). It is not possible to create another instance of Rules
+The Re.Engine is a singleton of type Rules (plural). It is not possible to create another instance of Rules
 within a process space as its constructor is private.
 
-The Rules.Engine contains APIs to impact its schema or to impact rule constructs that are not part of its schema.  
-The schema of the Rules.Engine is a list of Applications (below).
+The Re.Engine contains APIs to impact its schema or to impact rule constructs that are not part of its schema.  
+The schema of the Re.Engine is a list of Applications (below).
 
-There are two ways to utilize the Rules.Engine, and they can be used interchangeably. The first is to keep all rule
-constructs in a separate place and execute them through the Rules.Engine and other various constructs, define below. The
-second is to add them to the overall Rules.Engine schema and execute them from there. The choice of approach is up to
+There are two ways to utilize the Re.Engine, and they can be used interchangeably. The first is to keep all rule
+constructs in a separate place and execute them through the Re.Engine and other various constructs, define below. The
+second is to add them to the overall Re.Engine schema and execute them from there. The choice of approach is up to
 the user, but both have merit.
 
-We already covered one important Rules.Engine API:
+We already covered one important Re.Engine API:
 
 #### Execute a single Rule
 
@@ -398,11 +459,11 @@ We already covered one important Rules.Engine API:
 
 Examples:
 
-    Rules.Engine.executeRule({ticker: "ZEM", price: 5.0}, '<<ru>> <<ex type=Attribute data-type=Float>> price < 10.0');
+    Re.Engine.executeRule({ticker: "ZEM", price: 5.0}, '<<ru>> <<ex type=Attribute data-type=Float>> price < 10.0');
 
-    Rules.Engine.executeRule({ticker: "ZEM", price: 5.0}, 'price < 10.0');
+    Re.Engine.executeRule({ticker: "ZEM", price: 5.0}, 'price < 10.0');
 
-    Rules.Engine.executeRule({ticker: "ZEM", price: 5.0}, ['Financial Triggers', 'Buy Triggers', 'ZEM Trigger'];
+    Re.Engine.executeRule({ticker: "ZEM", price: 5.0}, ['Financial Triggers', 'Buy Triggers', 'ZEM Trigger'];
 
 #### Execute a Rule Set
 
@@ -414,11 +475,11 @@ Examples:
 
 Examples:
 
-    Rules.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, '<<rs>> <<ru>> price < 10.0');
+    Re.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, '<<rs>> <<ru>> price < 10.0');
 
-    Rules.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, 'price < 10.0');
+    Re.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, 'price < 10.0');
 
-    Rules.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, ['Financial Triggers', 'Buy Triggers']);
+    Re.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, ['Financial Triggers', 'Buy Triggers']);
 
 #### Execute an Application
 
@@ -429,15 +490,15 @@ Examples:
 
 Example using the Application and Rule Set hints:
 
-    Rules.Engine.executeApplication({ticker: "ZEM", price: 5.0}, '<<ap>> <<rs>> <<ru>> price < 10.0');
+    Re.Engine.executeApplication({ticker: "ZEM", price: 5.0}, '<<ap>> <<rs>> <<ru>> price < 10.0');
 
 or not using the hints, since they are not necessary in this context:
 
-    Rules.Engine.executeApplication({ticker: "ZEM", price: 5.0}, 'price < 10.0');
+    Re.Engine.executeApplication({ticker: "ZEM", price: 5.0}, 'price < 10.0');
 
 Executing a named Application:
 
-    Rules.Engine.executeApplication({ticker: "ZEM", price: 5.0}, 'Financial Triggers');
+    Re.Engine.executeApplication({ticker: "ZEM", price: 5.0}, 'Financial Triggers');
 
 ====>>> HERE
 
@@ -448,24 +509,24 @@ Executing a named Application:
 
     execute = (domain: any, rules?: string, ec?: ExecutionContextI) => RulesEngineREsult
 
-#### Add an application to the Rules.Engine schema
+#### Add an application to the Re.Engine schema
 
     addApplication = (app: Application | ApplicationReference | string, ec?: ExecutionContextI);
 
-This adds an application to the Rules.Engine schema. For the purposes of this Quick Start, assume the input is a textual
+This adds an application to the Re.Engine schema. For the purposes of this Quick Start, assume the input is a textual
 Application construct. Application and ApplicationReference are covered elsewhere.
 
-#### Add a Rule Set to the Rules.Engine schema
+#### Add a Rule Set to the Re.Engine schema
 
     addRuleSet = (appRef: string, ruleSet: RuleSet | RuleSetReference | string, ec?: ExecutionContextI);
 
-#### Add a Rule to the Rules.Engine schema
+#### Add a Rule to the Re.Engine schema
 
     addRule = (appRef: string, ruleSetRef: string, rule: Rule | RuleReference | string, ec?: ExecutionContextI);
 
 ### Applications
 
-Applications are an organizational concept. They store Rule Sets. A Rules.Engine schema can have more than one Rule Set,
+Applications are an organizational concept. They store Rule Sets. A Re.Engine schema can have more than one Rule Set,
 and if none is provided when adding other rule constructs, or if rule construct text does not specify the name, a
 default one called "Default" is added automatically.
 
