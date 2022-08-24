@@ -34,5 +34,7 @@ by it:
     
 ## Contents
 
-[Quick Start](./quick-start/quick-start.md#quick-start)
+1. [Quick Start](./quick-start/quick-start.md#quick-start)
+2. Bottoms Up
+   1. [Data Types](https://github.com/FranzZemen/re-data-type/ts-src/wiki/wiki.md)
 
