@@ -8,4 +8,4 @@ be referred to by its singleton name Re.Engine.
 
 ## Wiki
 
-[Wiki](./ts-src/wiki/wiki.md)
+[Wiki](./ts-src/wiki.md)
