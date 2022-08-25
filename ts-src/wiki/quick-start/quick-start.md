@@ -241,7 +241,7 @@ represented by dashes '-' and underscores '_', enclosed in double quotes, for wh
 Text where applicable.  Thus "--- ___ ---" which is the universal symbol of SOS in Morse would have a Data Type of 
 Morse, but "a-- ___ ---" would have a Data Type of Text.
 
-This concludes the Quick Start teaser.
+This concludes the Quick Start.
 
 # TODO: MOVE THE REST OF THIS SOMEWHERE ELSE
 
