@@ -1,7 +1,7 @@
 import 'mocha';
-import {isPromise} from '@franzzemen/re-common';
+import {isPromise} from 'node:util/types'
 import chai from 'chai';
-import {Re} from '../publish';
+import {Re} from '../publish/index.js';
 
 
 const expect = chai.expect;
@@ -16,7 +16,7 @@ describe('re tests', () => {
         ticker: 'ZEM',
         price: 5.0
       };
-      const result = Re.Engine.awaitRuleExecution(dataDomain, 'ticker = "ZEM" and price > 5.0');
+      const result = Re.Engine.awaitExecution(dataDomain, 'ticker = "ZEM" and price > 5.0');
       if(isPromise(result)) {
         unreachableCode.should.be.true;
       } else {
@@ -25,11 +25,12 @@ describe('re tests', () => {
       done();
     })
     it('should executeRule "ticker = "ZEM" and price >= 5.0"', done => {
+      Re.Engine.clear();
       const dataDomain = {
         ticker: 'ZEM',
         price: 5.0
       };
-      const result = Re.Engine.awaitRuleExecution(dataDomain, 'ticker = "ZEM" and price >= 5.0');
+      const result = Re.Engine.awaitExecution(dataDomain, '<<ap name="second">> ticker = "ZEM" and price >= 5.0');
       if(isPromise(result)) {
         unreachableCode.should.be.true;
       } else {

@@ -1,8 +1,8 @@
 import {ApplicationReference} from '@franzzemen/re-application';
-import {NamedReference} from '@franzzemen/re-common';
+import {ScopedReference} from '@franzzemen/re-rule';
 import {ReOptions} from './scope/re-options';
 
-export interface ReReference extends NamedReference {
+export interface ReReference extends ScopedReference {
   options: ReOptions;
   applications: ApplicationReference[];
 }

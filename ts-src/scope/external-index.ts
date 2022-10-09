@@ -1,2 +1,2 @@
-export * from './re-options';
-export * from './re-scope';
+export * from './re-options.js';
+export * from './re-scope.js';

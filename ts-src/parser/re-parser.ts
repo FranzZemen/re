@@ -1,11 +1,17 @@
 import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
-import {ApplicationParser, ApplicationReference} from '@franzzemen/re-application';
-import {Scope} from '@franzzemen/re-common';
-import {RuleContainerParser} from '@franzzemen/re-rule';
-import {ReReference} from '../re-reference';
-import {ReOptions} from '../scope/re-options';
-import {ReScope} from '../scope/re-scope';
-import {ReHintKey} from '../util/re-hint-key';
+import {
+  _mergeApplicationOptions,
+  ApplicationOptions,
+  ApplicationParser,
+  ApplicationReference,
+  ApplicationScope
+} from '@franzzemen/re-application';
+import {ParserMessages, Scope} from '@franzzemen/re-common';
+import {DelegateOptions, RuleContainerParser, RuleOptionOverrides} from '@franzzemen/re-rule';
+import {ReReference} from '../re-reference.js';
+import {ReOptions} from '../scope/re-options.js';
+import {ReScope} from '../scope/re-scope.js';
+import {ReHintKey} from '../util/re-hint-key.js';
 
 
 const rulesEngineHintPrefix = 're';
@@ -19,9 +25,8 @@ export class ReParser extends RuleContainerParser<ReReference> {
     super(ReHintKey.RulesEngine, []);
   }
 
-
-  protected createScope(options: ReOptions | undefined, parentScope: Scope | undefined, ec: ExecutionContextI | undefined): Scope {
-    return new ReScope(options, parentScope, ec);
+  protected createScope(options?: ReOptions, parentScope?: Scope, ec?: ExecutionContextI): ReScope {
+    return new ReScope(options, ec);
   }
 
   protected createReference(refName: string, options: ReOptions): ReReference {
@@ -32,15 +37,20 @@ export class ReParser extends RuleContainerParser<ReReference> {
     };
   }
 
-  protected delegateParsing(ref: ReReference, near: string, scope:ReScope, ec?: ExecutionContextI): string {
+  protected delegateParsing(ref: ReReference, near: string, scope:ReScope, ec?: ExecutionContextI): [string, ParserMessages] {
     const log = new LoggerAdapter(ec, 'rules-engine', 'rules-engine-parser', 'delegateParsing');
     let remaining = near;
     // The remaining text format must fully be digested by the remaining text, and pass in hints or returned hints from further down
     // must be Application hints (until there's another top level rule container or other artifact)
     while(remaining.length > 0) {
       const appParser: ApplicationParser = new ApplicationParser();
-      let appReference: ApplicationReference;
-      [remaining, appReference] = appParser.parse(remaining, scope, ec);
+      let appReference: ApplicationReference, appScope: ApplicationScope, parserMessages: ParserMessages;
+      let delegateOptions: DelegateOptions;
+      let appOverrides: RuleOptionOverrides[] = (scope?.options as ReOptions)?.applicationOverrides;
+      if(appOverrides && appOverrides.length > 0) {
+        delegateOptions = {mergeFunction: _mergeApplicationOptions, overrides: appOverrides}
+      }
+      [remaining, appReference, parserMessages] = appParser.parse(remaining, delegateOptions, scope, ec);
       if(appReference) {
         ref.applications.push(appReference);
       } else if (remaining.length > 0) {
@@ -55,16 +65,8 @@ export class ReParser extends RuleContainerParser<ReReference> {
       log.error(err);
       throw err;
     } else {
-      return remaining;
+      return [remaining, undefined];
     }
-  }
-
-  parseText(textFormat: string, ec?: ExecutionContextI): ReReference {
-    let [,ref,] = this.parse(textFormat, undefined, ec);
-    if(!ref) {
-      ref = this.createReference(undefined, {});
-    }
-    return ref;
   }
 
 }

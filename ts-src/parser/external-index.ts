@@ -1,1 +1,1 @@
-export * from './re-parser';
+export * from './re-parser.js';

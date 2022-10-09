@@ -1,10 +1,10 @@
 import {ExecutionContextI} from '@franzzemen/app-utility';
 import {ApplicationStringifier} from '@franzzemen/re-application';
 
-import {ReReference} from '../re-reference';
-import {ReScope} from '../scope/re-scope';
-import {ReHintKey} from '../util/re-hint-key';
-import {StringifyReOptions} from './stringify-re-options';
+import {ReReference} from '../re-reference.js';
+import {ReScope} from '../scope/re-scope.js';
+import {ReHintKey} from '../util/re-hint-key.js';
+import {StringifyReOptions} from './stringify-re-options.js';
 
 export class ReStringifier {
   constructor() {

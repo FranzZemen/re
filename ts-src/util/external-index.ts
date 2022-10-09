@@ -1,1 +1,1 @@
-export * from './re-hint-key';
+export * from './re-hint-key.js';

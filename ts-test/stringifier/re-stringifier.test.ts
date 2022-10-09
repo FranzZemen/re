@@ -1,6 +1,6 @@
 import chai from 'chai';
 import 'mocha';
-import {ReParser, ReScope, ReStringifier} from '../../publish';
+import {ReParser, ReScope, ReStringifier} from '../../publish/index.js';
 
 
 const expect = chai.expect;
