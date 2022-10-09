@@ -16,8 +16,8 @@ export interface ReResult {
 }
 
 
-export class Re extends RuleElementFactory<Application> {
-  static Engine = new Re();
+export class Rules extends RuleElementFactory<Application> {
+  static Engine = new Rules();
   scope: ReScope;
   private options: ReOptions;
 
@@ -30,7 +30,7 @@ export class Re extends RuleElementFactory<Application> {
 
   to(ec?: ExecutionContextI): ReReference {
     /*
-    const rulesEngineRef: ReReference = {refName: 'Re.Engine', options: this.options, applications: []};
+    const rulesEngineRef: ReReference = {refName: 'Rules.Engine', options: this.options, applications: []};
     this.getApplications().forEach(application => rulesEngineRef.applications.push(application.to(ec)));
     return rulesEngineRef;*/
     return undefined;
@@ -76,7 +76,7 @@ export class Re extends RuleElementFactory<Application> {
   }
 
   /**
-   * This method executes all the rules in the Re Engine Scope
+   * This method executes all the rules in the Rules Engine Scope
    * @param dataDomain
    * @param ec
    */

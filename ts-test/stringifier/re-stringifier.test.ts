@@ -18,7 +18,7 @@ describe('re tests', () => {
       it ('should stringify "5 = test <<ap name="Application2">> 6 < ab', done => {
         const [remaining, reReference] = parser.parse('<<ru name=Rule1>> 5 = test <<ap name="Application2">> <<ru name=Rule2>> 6 < ab');
         const stringified = stringifier.stringify(reReference, scope);
-        stringified.should.equal('<<re name=Re.Engine>> <<ap name=Default>> <<rs name=Default>> <<ru name=Rule1>> 5 = test <<ap name=Application2>> <<rs name=Default>> <<ru name=Rule2>> 6 < ab');
+        stringified.should.equal('<<re name=Rules.Engine>> <<ap name=Default>> <<rs name=Default>> <<ru name=Rule1>> 5 = test <<ap name=Application2>> <<rs name=Default>> <<ru name=Rule2>> 6 < ab');
         done();
       })
   })

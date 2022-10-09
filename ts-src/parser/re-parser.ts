@@ -31,7 +31,7 @@ export class ReParser extends RuleContainerParser<ReReference> {
 
   protected createReference(refName: string, options: ReOptions): ReReference {
     return {
-      refName: 'Re.Engine',
+      refName: 'Rules.Engine',
       applications: [],
       options
     };

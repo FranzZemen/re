@@ -24,7 +24,7 @@ decision point is:
 
 The rule might be executed using the following API:
 
-    if(Re.Engine.awaitRuleExecution(dataDomain, 'ticker = "ZEM" and price > 5.0')) {
+    if(Rules.Engine.awaitRuleExecution(dataDomain, 'ticker = "ZEM" and price > 5.0')) {
         // log the result
     }
 
@@ -375,13 +375,13 @@ that would define stock.price as a literal value (assuming the user did not crea
 ## Introduction To The Rules API
 
 Writing rules is great, but we really want to run them. There are several objects that purposefully expose APIs.  
-Here we will focus on some key API of the Re.Engine singleton.
+Here we will focus on some key API of the Rules.Engine singleton.
 
 ### Execute a Rule
 
 There are many ways to execute rules, and we already saw one of them above:
 
-    Re.Engine.awaitExecution(dataDomain, 'ticker = "ZEM" and price > 5.0')
+    Rules.Engine.awaitExecution(dataDomain, 'ticker = "ZEM" and price > 5.0')
 
 This executes a specific rule expressed as text and returns the execution result.
 
@@ -392,10 +392,10 @@ The full Typescript signature of this API is:
 Meaning it is a function that takes 3 parameters, including one optional parameter, and returns either a Result
 (RuleResult) or a Promise to one.
 
-Any options set on the Re.Engine are applied (and additional options can be included in the Rule text). The function
+Any options set on the Rules.Engine are applied (and additional options can be included in the Rule text). The function
 itself does not accept Options.
 
-If the text passed doesn't correspond to rule constructs, the Re.Engine will search its schema for a rule by that
+If the text passed doesn't correspond to rule constructs, the Rules.Engine will search its schema for a rule by that
 textual name and execute the first instance it finds. Alternatively, if the text is a properly constructed rule it will
 compile and execute it, but it will not add it to the schema.
 
@@ -435,20 +435,20 @@ important feature is its logging definition.
 We will cover the Execution Context in more detail elsewhere. Suffice it to say for now that if it is omitted, the
 default implementation logger will be the console.
 
-### The Re.Engine
+### The Rules.Engine
 
-The Re.Engine is a singleton of type Rules (plural). It is not possible to create another instance of Rules
+The Rules.Engine is a singleton of type Rules (plural). It is not possible to create another instance of Rules
 within a process space as its constructor is private.
 
-The Re.Engine contains APIs to impact its schema or to impact rule constructs that are not part of its schema.  
-The schema of the Re.Engine is a list of Applications (below).
+The Rules.Engine contains APIs to impact its schema or to impact rule constructs that are not part of its schema.  
+The schema of the Rules.Engine is a list of Applications (below).
 
-There are two ways to utilize the Re.Engine, and they can be used interchangeably. The first is to keep all rule
-constructs in a separate place and execute them through the Re.Engine and other various constructs, define below. The
-second is to add them to the overall Re.Engine schema and execute them from there. The choice of approach is up to
+There are two ways to utilize the Rules.Engine, and they can be used interchangeably. The first is to keep all rule
+constructs in a separate place and execute them through the Rules.Engine and other various constructs, define below. The
+second is to add them to the overall Rules.Engine schema and execute them from there. The choice of approach is up to
 the user, but both have merit.
 
-We already covered one important Re.Engine API:
+We already covered one important Rules.Engine API:
 
 #### Execute a single Rule
 
@@ -459,11 +459,11 @@ We already covered one important Re.Engine API:
 
 Examples:
 
-    Re.Engine.executeRule({ticker: "ZEM", price: 5.0}, '<<ru>> <<ex type=Attribute data-type=Float>> price < 10.0');
+    Rules.Engine.executeRule({ticker: "ZEM", price: 5.0}, '<<ru>> <<ex type=Attribute data-type=Float>> price < 10.0');
 
-    Re.Engine.executeRule({ticker: "ZEM", price: 5.0}, 'price < 10.0');
+    Rules.Engine.executeRule({ticker: "ZEM", price: 5.0}, 'price < 10.0');
 
-    Re.Engine.executeRule({ticker: "ZEM", price: 5.0}, ['Financial Triggers', 'Buy Triggers', 'ZEM Trigger'];
+    Rules.Engine.executeRule({ticker: "ZEM", price: 5.0}, ['Financial Triggers', 'Buy Triggers', 'ZEM Trigger'];
 
 #### Execute a Rule Set
 
@@ -475,11 +475,11 @@ Examples:
 
 Examples:
 
-    Re.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, '<<rs>> <<ru>> price < 10.0');
+    Rules.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, '<<rs>> <<ru>> price < 10.0');
 
-    Re.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, 'price < 10.0');
+    Rules.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, 'price < 10.0');
 
-    Re.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, ['Financial Triggers', 'Buy Triggers']);
+    Rules.Engine.executeRuleSet({ticker: "ZEM", price: 5.0}, ['Financial Triggers', 'Buy Triggers']);
 
 #### Execute an Application
 
@@ -490,15 +490,15 @@ Examples:
 
 Example using the Application and Rule Set hints:
 
-    Re.Engine.executeApplication({ticker: "ZEM", price: 5.0}, '<<ap>> <<rs>> <<ru>> price < 10.0');
+    Rules.Engine.executeApplication({ticker: "ZEM", price: 5.0}, '<<ap>> <<rs>> <<ru>> price < 10.0');
 
 or not using the hints, since they are not necessary in this context:
 
-    Re.Engine.executeApplication({ticker: "ZEM", price: 5.0}, 'price < 10.0');
+    Rules.Engine.executeApplication({ticker: "ZEM", price: 5.0}, 'price < 10.0');
 
 Executing a named Application:
 
-    Re.Engine.executeApplication({ticker: "ZEM", price: 5.0}, 'Financial Triggers');
+    Rules.Engine.executeApplication({ticker: "ZEM", price: 5.0}, 'Financial Triggers');
 
 ====>>> HERE
 
@@ -509,24 +509,24 @@ Executing a named Application:
 
     execute = (domain: any, rules?: string, ec?: ExecutionContextI) => RulesEngineREsult
 
-#### Add an application to the Re.Engine schema
+#### Add an application to the Rules.Engine schema
 
     addApplication = (app: Application | ApplicationReference | string, ec?: ExecutionContextI);
 
-This adds an application to the Re.Engine schema. For the purposes of this Quick Start, assume the input is a textual
+This adds an application to the Rules.Engine schema. For the purposes of this Quick Start, assume the input is a textual
 Application construct. Application and ApplicationReference are covered elsewhere.
 
-#### Add a Rule Set to the Re.Engine schema
+#### Add a Rule Set to the Rules.Engine schema
 
     addRuleSet = (appRef: string, ruleSet: RuleSet | RuleSetReference | string, ec?: ExecutionContextI);
 
-#### Add a Rule to the Re.Engine schema
+#### Add a Rule to the Rules.Engine schema
 
     addRule = (appRef: string, ruleSetRef: string, rule: Rule | RuleReference | string, ec?: ExecutionContextI);
 
 ### Applications
 
-Applications are an organizational concept. They store Rule Sets. A Re.Engine schema can have more than one Rule Set,
+Applications are an organizational concept. They store Rule Sets. A Rules.Engine schema can have more than one Rule Set,
 and if none is provided when adding other rule constructs, or if rule construct text does not specify the name, a
 default one called "Default" is added automatically.
 
