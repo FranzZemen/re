@@ -40,7 +40,7 @@ describe('re tests', () => {
     it('should fail "hello"', () => {
       Rules.Engine.awaitExecution({},'hello');
     })
-    
+
      */
   })
 })

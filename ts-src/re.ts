@@ -1,6 +1,6 @@
 import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
 import {Application, ApplicationResult, isApplication} from '@franzzemen/re-application';
-import {RuleElementFactory, RuleElementReference, Scope} from '@franzzemen/re-common';
+import {ParserMessages, RuleElementFactory, RuleElementReference, Scope} from '@franzzemen/re-common';
 import {Rule} from '@franzzemen/re-rule';
 import {RuleSet} from '@franzzemen/re-rule-set';
 import {isPromise} from 'node:util/types';
@@ -165,7 +165,7 @@ export class Rules extends RuleElementFactory<Application> {
   }
 
 
-  load(text: string, ec?: ExecutionContextI): true | Promise<true> {
+  load(text: string, ec?: ExecutionContextI): [true, ParserMessages] | Promise<[true, ParserMessages]> {
     const parser = new ReParser();
     let [remaining, ref, parserMessages] = parser.parse(text, {options: this.scope.options, mergeFunction: _mergeReOptions},undefined, ec);
     // The combination of the current options in scope, which was originally initialized by them, along with the merge of those
@@ -173,14 +173,14 @@ export class Rules extends RuleElementFactory<Application> {
     this.scope = ref.loadedScope;
     const truOrPromise = Scope.resolve(this.scope, ec);
     if(isPromise(truOrPromise)) {
-      truOrPromise
+      return truOrPromise
         .then(truVal => {
           ref.applications.forEach(appRef => this.addApplication(new Application(appRef, this.scope, ec)));
-          return true;
+          return [true, parserMessages];
         })
     } else {
       ref.applications.forEach(appRef => this.addApplication(new Application(appRef, this.scope, ec)));
-      return true;
+      return [true, parserMessages];
     }
   }
 
