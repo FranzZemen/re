@@ -11,7 +11,7 @@ const unreachableCode = false;
 
 describe('re tests', () => {
   describe('re.test', () => {
-    it('should executeRule "ticker = "ZEM" and price > 5.0"', done => {
+    it('should executeRule "ticker = "ZEM" and price > 5.0"', () => {
       const dataDomain = {
         ticker: 'ZEM',
         price: 5.0
@@ -22,9 +22,8 @@ describe('re tests', () => {
       } else {
         result.valid.should.be.false;
       }
-      done();
     })
-    it('should executeRule "ticker = "ZEM" and price >= 5.0"', done => {
+    it('should executeRule "ticker = "ZEM" and price >= 5.0"', () => {
       Rules.Engine.clear();
       const dataDomain = {
         ticker: 'ZEM',
@@ -36,7 +35,12 @@ describe('re tests', () => {
       } else {
         result.valid.should.be.true;
       }
-      done();
     })
+    /*
+    it('should fail "hello"', () => {
+      Rules.Engine.awaitExecution({},'hello');
+    })
+    
+     */
   })
 })
