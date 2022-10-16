@@ -13,7 +13,7 @@ and some backlog that is desired to be added is in flight.
 
 ## Installation
 
-See [Readme](../Readme.md)
+See [Readme](/Readme.md)
 
 To use the re framework:
 
