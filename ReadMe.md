@@ -1,5 +1,5 @@
-- [ReadMe](../ReadMe.md)
-- [Wiki Index](./WikiIndex.md)
+- [Wiki](./ts-src/wiki.md)
+- [Wiki Index](./ts-src/WikiIndex.md)
 
 # Read Me
 
