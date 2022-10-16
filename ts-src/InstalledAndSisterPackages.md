@@ -64,3 +64,7 @@ Hosted
 
     https://www.butchersrow.com/re/rest   Hosted, account based REST server and backing storage
     https://www.butchersrow.com/re        Hosted, account based UI, REST server and backing storage
+
+State Process
+
+    @franzzemen/sp                        A state-process engine (aka mapped workflow) that leverages @franzzemen/re
