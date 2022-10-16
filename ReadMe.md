@@ -9,10 +9,18 @@ documentation as the Rules Engine. It can also be referred to by its singleton n
 
 Node versions 16.x + are supported
 
-Until we release @franzzemen/re-browser-native we make no commitments as to whether @franzzemen/re can be loaded in a
-browser.
+Until we test and release either updates to support a browser version or release separate package supporting browsers we
+make no commitments whether it can be loaded in a browser.
 
 ### Javascript Target
+
+The Javascript target is ECMAScript 2021 (es2021 tsc target option).
+
+The module resolution to load this package is ECMAScript which is now the standard.  A helpful package, 
+[@franzzemen/re-commonjs-examples](https://www.npmjs.com/package/@franzzemen/re-commonjs-examples), has been 
+provided in npm and github on how to integrate into a CommonJS loaded project.
+
+For alternatives Javascript targets or for CommonJS see [this](./ts-src/JavascriptTargetAndModuleResolution.md)
 
 Javascript Target is ECMAScript 2021 or es2021 tsc target option. This means that some of the latest features of
 Javascript are included, and that module loading required to load this package is ES module loading, which was part of
@@ -53,7 +61,7 @@ For actual working code, to incorporate promises for example:
 
 A working example is provided
 in [@franzzemen/re-commonjs-examples](https://www.npmjs.com/package/@franzzemen/re-commonjs-examples). You can install
-and run, or clone from github and use the scaffolding as a starting point. 
+and run, or clone from github and use the scaffolding as a starting point.
 
 ## Install
 
