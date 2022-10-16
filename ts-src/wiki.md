@@ -91,11 +91,12 @@ works and should be released shortly, if only as reference implementations.
   servicer (metal, EC2, AppEngine etc) will enable the Rule.Engine api to serve out as a rest service. A persistence
   configuration or integration is needed if one does not want all data to be lost with a rest service/node restart. Note
   that this is not implemented using a third party package - only dependencies are on node. A persistence option can be
-  configured, otherwise it will use re-jsondb (or fail if drive writes are not enabled).
+  configured, otherwise it will use re-jsondb (or fail if drive writes are not enabled).  Also useful if you want to 
+  avoid using an ES module loader, the dynamic import() function, or @franzzemen/re-commonjs-adapter.
 - @franzzemen/re-express:  A package for integration into Express; A persistence option can be configured, otherwise it
   will use re-jsondb (or fail if drive writes are not enabled).
 - https://www.butchersrow.com/re/api:  Once deployed, this will provide a hosted version of the rules engine API. 
-  Even if one does not desire hosting, it can be useful for testing without installing anything.
+  Even if one does not desire hosting, it can be useful for testing without installing anything.  
 
 **Persistence**:
 The persistence packages, were applicable or not otherwise stated will create resources necessary if they do not exist.
@@ -118,6 +119,7 @@ re-persistence implementations:
 
 - @franzzemen/re-ui:  A framework-less package to integrate specific UIs.  Requires a concrete implementation of 
   re-server OR a configured mapping of functionality if the user is not implementing re-server
+- @franzzemen/ui-components:  Frameworkless support for browser components.
 - @franzzemen/re-angular:  An Angular implementation of re-ui for integration into an Angular project.
 - @franzzemen/re-react:  A React implementation.  Note this is at the bottom of the backlog.
 - @franzzemen/re-vue:  A Vue implementation.  Note that this is at the bottom of the backlog.
