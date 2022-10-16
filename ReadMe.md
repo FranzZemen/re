@@ -29,7 +29,7 @@ For alternatives Javascript targets or for CommonJS see [this](./ts-src/Javascri
 
     npm i @franzzemen/re
 
-For what this installs, and other packages, see here.
+For what this installs, and other packages, see [here](./ts-src/InstalledAndSisterPackages.md).
 
 
 ## Wiki
