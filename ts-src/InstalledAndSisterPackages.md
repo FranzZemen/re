@@ -39,6 +39,7 @@ Additional optional sister components are in various stages of development:
     @franzzemen/re-rest                   A rest server implementation deployable on bare metal, AWS EC2, AppEngine. Usually configured with a re-persistence implementation.  Does **not** leverage Express or similar. Build from the ground up with Node, thus very lightweight.
     @franzzemen/re-express                An expression implementation for use with an Express install, or usable directly
 
+
 - Persistence Frameworks
 
 
@@ -50,11 +51,13 @@ Additional optional sister components are in various stages of development:
     @franzemen/re-rds                     An AWS deployable RDS re-persistence implementation
     @franzemen/re-lambdadb                An AWS deployable Lambda re-persistence implementation backed by re-s3, rre-dynamodb or rs-rds
 
+
 - Browser Based
 
 
     @franzzemen/re-browser                Run re in the browser
     @franzzemen/re-web-workers:           Supports web workers
+
 
 - UI Frameworks to manipulate building and parsing rules
 
@@ -63,6 +66,7 @@ Additional optional sister components are in various stages of development:
     @franzzemen/re-angular                Angular implementation of re-ui
     @franzzemen/re-react                  React implementation of re-ui
     @franzzemen/re-vue                    Vue implementation of re-ui
+
 
 - Hosted
 
