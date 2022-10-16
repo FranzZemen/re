@@ -35,12 +35,14 @@ Additional optional sister components are in various stages of development:
 - Server Frameworks
 
 
+
     @franzzemen/re-server                 An abstraction to support a server implementation packages
     @franzzemen/re-rest                   A rest server implementation deployable on bare metal, AWS EC2, AppEngine. Usually configured with a re-persistence implementation.  Does **not** leverage Express or similar. Build from the ground up with Node, thus very lightweight.
     @franzzemen/re-express                An expression implementation for use with an Express install, or usable directly
 
 
 - Persistence Frameworks
+
 
 
     @franzzemen/re-persistence            An abstraction to support persistence packages
@@ -55,11 +57,13 @@ Additional optional sister components are in various stages of development:
 - Browser Based
 
 
+
     @franzzemen/re-browser                Run re in the browser
     @franzzemen/re-web-workers:           Supports web workers
 
 
 - UI Frameworks to manipulate building and parsing rules
+
 
 
     @franzzemen/re-ui:                    An abstract implementation to support ui packages, integrates either with re-browser, a re-server implementation or a configured mapping to a custom server rest API
@@ -69,6 +73,7 @@ Additional optional sister components are in various stages of development:
 
 
 - Hosted
+
 
 
     https://www.butchersrow.com/re/rest   Hosted, account based REST server and backing storage
