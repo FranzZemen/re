@@ -1,4 +1,5 @@
-[../ReadMe](../ReadMe.md)/wiki
+- [ReadMe](../ReadMe.md)
+- [Wiki Index](./WikiIndex.md)
 
 # @franzzemen/re Rules Engine Wiki
 
