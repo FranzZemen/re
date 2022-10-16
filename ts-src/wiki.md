@@ -1,13 +1,19 @@
 # @franzzemen/re Rules Engine Wiki
 
-Welcome to the Rules Engine, hereforth referred to the "re" pronounced "R E".
+Welcome to the Rules Engine, hereforth referred to the "re" pronounced "R E", or also as its singleton name, the 
+Rules.Engine.
 
 ## Status of Project
 
-The project is currently in the _experimental_ phase and not ready for production use. Documentation is incomplete,
-features are likely to be refactored often, and testing is sub-par.
+The project has moved from _experimental_ to alpha stage, anticipating to move to beta stage by December 31, 2022, 
+and to production readiness by March 2023 or earlier.
+
+Features are tested and working, but the test coverage is not adequate for beta stage, documentation is in progress 
+and some backlog that is desired to be added is in flight.
 
 ## Installation
+
+See [Readme](../Readme.md)
 
 To use the re framework:
 
