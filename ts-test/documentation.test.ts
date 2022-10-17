@@ -21,15 +21,12 @@ const ec: ExecutionContextI = {
     log: {
       level: 'info',
       depth: 10,
-      /*
       logAttributes: {
         hideAppContext: true,
         hideLevel: true,
         hideRequestId: true,
         hideThread: true,
       }
-
-       */
     }
   }
 }

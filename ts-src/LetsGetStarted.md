@@ -24,11 +24,29 @@ You have variable stock data streaming, at least some of the format looks like:
       reference: 1956
     }
 
-You want to execute a rule so that you can take action on it.  See Example 1:
+If want to execute a rule so that you can take action on it.  See Example 1:
 
-    let valid = Rules.Engine.execute(domain, 'price < 6.99 and reference = 1956').valid;
-
+    let result = Rules.Engine.execute(domain, 'price < 6.99 and reference = 1956').result as ReResult;
+    log.info({},`result.valid is ${result.valid}`);
+    if(result.valid) {
+      ...
+    }
     
+
+Then log output might look something like this:
+
+    2022-10-17T02:23:10.726 INFO:
+    {
+      message: 'result.valid is true',
+      repo: 're',
+      sourceFile: 'documentation.test',
+      method: 'Example 1',
+      data: {}
+    }
+
+
+
+
 
 You desire to take some action if the ticker = "ZEM" and the price is greater than $5. You decide to externalize this
 decision, potentially to allow a user through UI to alter the ticker and/or price. Instead of writing custom code for
