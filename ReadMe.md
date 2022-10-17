@@ -1,4 +1,4 @@
-- [Wiki](./ts-src/wiki.md)
+- [Wiki](./ts-src/Wiki.md)
 - [Wiki Index](./ts-src/WikiIndex.md)
 
 # Read Me
@@ -36,4 +36,24 @@ For what this installs, and other packages, see [here](./ts-src/InstalledAndSist
 
 Documentation is contained in the wiki. Note that this is not the Github project wiki. Access it through this link:
 
-[Wiki](./ts-src/wiki.md)
+[Wiki](./ts-src/Wiki.md)
+
+
+## Support
+
+If you need support, please enter an issue on the Github project site.    
+
+If  your request is of an urgent nature, you may also contact the team via email at:
+
+    github.franzzemen@gmail.com
+
+For critical emergencies, such as "hey a million people depend on this" you may contact the team via Telegram 
+(mobile & web app) using handle:
+
+    @FrankieLaliberte 
+
+Please be very specific on who you are, the organization you represent (if applicable), your specific issue, any 
+timeframes that are critical to you and so on.
+
+We respond to every request...eventually, but we reserve the right to respond in an inconclusive way.  Contact one of 
+the above direct channels (email or Telegram) for paid support plan options.  
