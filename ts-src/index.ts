@@ -31,7 +31,7 @@ export function execute() {
     try {
       const rule = result[1];
       console.info(`rule: "${rule}"`);
-      Rules.Engine.awaitExecution({}, rule, ec);
+      Rules.Engine.execute({}, rule, ec);
     } catch (err) {
       log.error(err);
     }

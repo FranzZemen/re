@@ -118,41 +118,7 @@ export class Rules extends RuleElementFactory<Application> {
     }
   }
 
-  /**
-   * This method executes a provided rule (in Text Format).  If the ruleText is not possibly a rule, then it is treated
-   * as a rule name.
-   * @param domain
-   * @param ruleText
-   * @param ec
-   */
-  /*
-  awaitExecution(domain: any, ruleText: string, ec?: ExecutionContextI): RuleResult | Promise<RuleResult> {
-    let rule: Rule;
-    if (possiblyARuleConstruct(ruleText)) {
-      const parser = new RuleParser();
-      const [remaining, ruleReference] = parser.parse(ruleText, undefined, ec);
-      rule = new Rule(ruleReference, undefined, ec);
-    } else {
-      rule = this.findFirstRule(ruleText, ec);
-    }
-    if (rule) {
-      return rule.awaitExecution(domain, ec);
-    } else {
-      const log = new LoggerAdapter(ec, 'rules-engine', 'rules', 'awaitExecution');
-      log.warn(`No rule for ${ruleText}`);
-      return {valid: false, ruleRef: undefined, ruleText};
-    }
-  }*/
-
-  /**
-   * This method executes a provided rule, forcing synchronicity
-   * @param domain
-   * @param text
-   * @param ec
-   */
-
-
-  awaitExecution(domain: any, text: string, ec?: ExecutionContextI): ReResult | Promise<ReResult> {
+  execute(domain: any, text: string, ec?: ExecutionContextI): ReResult | Promise<ReResult> {
     const truOrPromise = this.load(text, ec);
     if(isPromise(truOrPromise)) {
       truOrPromise

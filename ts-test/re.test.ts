@@ -16,7 +16,7 @@ describe('re tests', () => {
         ticker: 'ZEM',
         price: 5.0
       };
-      const result = Rules.Engine.awaitExecution(dataDomain, 'ticker = "ZEM" and price > 5.0');
+      const result = Rules.Engine.execute(dataDomain, 'ticker = "ZEM" and price > 5.0');
       if(isPromise(result)) {
         unreachableCode.should.be.true;
       } else {
@@ -29,7 +29,7 @@ describe('re tests', () => {
         ticker: 'ZEM',
         price: 5.0
       };
-      const result = Rules.Engine.awaitExecution(dataDomain, '<<ap name="second">> ticker = "ZEM" and price >= 5.0');
+      const result = Rules.Engine.execute(dataDomain, '<<ap name="second">> ticker = "ZEM" and price >= 5.0');
       if(isPromise(result)) {
         unreachableCode.should.be.true;
       } else {

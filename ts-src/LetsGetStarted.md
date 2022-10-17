@@ -1,16 +1,34 @@
-[Home](../wiki.md) -> Quick Start
+- [ReadMe](../ReadMe.md)
+- [Wiki](./ts-src/Wiki.md)
+- [Wiki Index](./WikiIndex.md)
 
-# Quick Start
+# Let's Get Started
 
-This quick start is helpful to orient new users to the Rules Engine.
+You have variable stock data streaming, at least some of the format looks like:
 
-Suppose you have a stream of stock market equity objects of the shape:
-
-    {
+    interface StockDomain1 {
         ticker: string,
         price: number,
-        peRatio: number
+        peRatio: number,
+        canTrade: boolean,
+        lastTick: string,
+        reference: number
     }
+
+    const domain:StockDomain1 = {
+      ticker: 'ZEM',
+      price: 5.0,
+      peRatio: 20.0,
+      canTrade: true,
+      lastTick:'2020-10-24T09:30:00',
+      reference: 1956
+    }
+
+You want to execute a rule so that you can take action on it.  See Example 1:
+
+    let valid = Rules.Engine.execute(domain, 'price < 6.99 and reference = 1956').valid;
+
+    
 
 You desire to take some action if the ticker = "ZEM" and the price is greater than $5. You decide to externalize this
 decision, potentially to allow a user through UI to alter the ticker and/or price. Instead of writing custom code for
