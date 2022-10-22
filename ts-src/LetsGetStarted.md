@@ -4,25 +4,139 @@
 
 # Let's Get Started
 
-You have variable stock data streaming, at least some of the format looks like:
+We'll start with examples of rules.
+
+Assume you have variable stock data streaming, at least some of the format looks like:
 
     interface StockDomain1 {
+        previousTicker: StockDomain1,
         ticker: string,
         price: number,
         peRatio: number,
         canTrade: boolean,
+        tradedToday: boolean,
         lastTick: string,
-        reference: number
+        reference: number,
+        history?: {price: number, timestamp: string}[]
     }
 
+And an instance of the stream looks like:
+
     const domain:StockDomain1 = {
+      previousTicker: {
+        ticker: 'JPM',
+        price: 100.0,
+        lastPrice: 99.90,
+        peRation: 15.0,
+        canTrade: false,
+        tradedToday: false,
+        lastTick: '2020-10-24T08:45:00',
+        reference: 745
+      }
       ticker: 'ZEM',
       price: 5.0,
+      lastPrice: 4.9,
       peRatio: 20.0,
       canTrade: true,
+      tradedToday: false,
       lastTick:'2020-10-24T09:30:00',
-      reference: 1956
+      reference: 1956,
+      history: [{
+        price: 4.9, timestamp: '2020-10-24T08:24:00'
+      },{
+        price: 4.7, timestamp: '2020-10-24T07:35:00'
+      },{
+        price: 5.1, timestamp: '2020-10-24T06:00:00'
+      }]
     }
+
+## Simple Condition Examples
+
+### Attribute Compared To Value
+
+    'canTrade is true'
+
+### Attribute Compared to Attribute
+
+    'price > lastPrice'                               // Data type determined at runtime (allowUnknownTypes: true)
+
+    '<<ex data-type=Float>> price > lastPrice'        // Data type determined at parse time
+
+### Attribute Compared to Nested Value
+
+    'peRatio >= previousTicker.peRation'
+
+### Attribute Compared to Nested Value
+
+    'price > history[2].price'
+
+### Timestamp comparisons
+
+    'lastTick m> history[2].timestamp'
+
+## Logical Conditions Example
+
+### Simple And
+
+    'canTrade = true and price > lastPrice'
+
+### Simple Or
+
+    'price > lastPrice or peRatio < 15.0'
+
+### And and Or
+
+    'canTrade = true and price > lastPrice or peRatio < 15.0'  // True if canTrade and either price > lastPrice or peRatio < 15.0
+
+### Nesting
+
+    '(canTrade = true and price > lastPrice) or peRatio < 15.0' // True if both canTrade and price < lastPrice OR if peRatio < 15.0
+
+### Unlimited Nesting
+
+    'canTrade and ((price > lastPrice or peRation < 15.0) and previousTicker.tradedToday = false)'
+
+## Formula Expressions
+
+### Simple Formula With Nested Attribute And Value Expressions
+
+    '#[peRatio / price * 1.256 - 1.0] < 49.0'
+
+### Nested Formulas
+
+    '#[peRatio / #[price * 5]] <= 35.0'
+
+## Function Expressions
+
+### Parameterless Function
+
+    '@Funds > #[10000.0 * price]
+
+### Function with Parameters
+
+    '@Stochastic[ticker, 4.0] < 49%'
+
+### Function With Complex Parameters
+
+    '@Stochastic[@BestCompetitor[ticker, #[4.0 * price * @CustomVariance]] < 35%
+
+## Sets
+
+### In Example
+    
+    'price in [3.5, 4.9, 5.0]'
+
+### Synonyms
+
+    '[3.5, 4.9, 5.0] contains price'
+
+### In With Attributes
+
+    'price not in [3.5, 4.9, history[0].price]]'
+
+
+
+
 
 If want to execute a rule so that you can take action on it.  See Example 1:
 
