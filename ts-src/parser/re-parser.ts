@@ -40,7 +40,7 @@ export class ReParser extends RuleContainerParser<ReReference> {
       const appParser: ApplicationParser = new ApplicationParser();
       let appReference: ApplicationReference, appScope: ApplicationScope, parserMessages: ParserMessages;
       let delegateOptions: DelegateOptions;
-      let appOverrides: RuleOptionOverrides[] = (scope?.options as ReRulesEngine)?.rulesEngine?.applicationOverrides;
+      let appOverrides: RuleOptionOverrides[] = (scope?.options as ReRulesEngine)?.['re-rules-engine']?.applicationOverrides;
       if (appOverrides && appOverrides.length > 0) {
         delegateOptions = {overrides: appOverrides};
       }

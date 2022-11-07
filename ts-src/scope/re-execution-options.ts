@@ -29,7 +29,7 @@ export interface RulesEngineOptions extends ApplicationOptions {
 
 
 export interface ReRulesEngine extends ReApplication {
-  rulesEngine?: RulesEngineOptions;
+  're-rules-engine'?: RulesEngineOptions;
 }
 
 export interface RulesEngineExecutionContext extends ApplicationExecutionContext {
@@ -39,15 +39,15 @@ export interface RulesEngineExecutionContext extends ApplicationExecutionContext
 export class RulesEngineExecutionContextDefaults {
   static RulesEngineOptions: RulesEngineOptions = {};
   static ReRulesEngine: ReRulesEngine = {
-    common: CommonExecutionContextDefaults.CommonOptions,
-    data: DataTypeExecutionContextDefaults.DataTypeOptions,
-    expression: ExpressionExecutionContextDefaults.ExpressionOptions,
-    condition: ConditionExecutionContextDefaults.ConditionOptions,
-    logicalCondition: LogicalConditionExecutionContextDefaults.LogicalConditionOptions,
-    rule: RuleExecutionContextDefaults.RuleOptions,
-    ruleset: RuleSetExecutionContextDefaults.RuleSetOptions,
-    application: ApplicationExecutionContextDefaults.ApplicationOptions,
-    rulesEngine: RulesEngineExecutionContextDefaults.RulesEngineOptions
+    're-common': CommonExecutionContextDefaults.CommonOptions,
+    're-data-type': DataTypeExecutionContextDefaults.DataTypeOptions,
+    're-expression': ExpressionExecutionContextDefaults.ExpressionOptions,
+    're-condition' : ConditionExecutionContextDefaults.ConditionOptions,
+    're-logical-condition': LogicalConditionExecutionContextDefaults.LogicalConditionOptions,
+    're-rule': RuleExecutionContextDefaults.RuleOptions,
+    're-rule-set': RuleSetExecutionContextDefaults.RuleSetOptions,
+    're-application': ApplicationExecutionContextDefaults.ApplicationOptions,
+    're-rules-engine': RulesEngineExecutionContextDefaults.RulesEngineOptions
   };
   static RulesEngineExecutionContext: RulesEngineExecutionContext = {
     execution: ExecutionContextDefaults.Execution(),
