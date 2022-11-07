@@ -1,4 +1,4 @@
-import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
+import {LogExecutionContext, LoggerAdapter} from '@franzzemen/logger-adapter';
 import {Rules} from './re.js';
 
 export * from './util/external-index.js';
@@ -9,10 +9,8 @@ export * from './parser/external-index.js';
 export * from './stringifier/external-index.js';
 
 
-const ec: ExecutionContextI = {
-  config: {
-    log: {
-    }
+const ec: LogExecutionContext = {
+  log: {
   }
 }
 
@@ -24,7 +22,7 @@ export function execute() {
     log.error(missingRuleError);
     process.exit(1);
   }
-  const ruleRegex = /^rule=[\s\t\r\n\v\f\u2028\u2029]*([^]+)$/;
+  const ruleRegex = /^rule=[\s]*([^]+)$/;
   let result;
   const found = process.argv.find(arg => (result = ruleRegex.exec(arg)) !== null);
   if(found) {

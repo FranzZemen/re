@@ -1,9 +1,9 @@
 - [ReadMe](../ReadMe.md)
 - [Wiki Index](./WikiIndex.md)
 
-# @franzzemen/re Rules Engine Wiki
+# @franzzemen/rulesEngine Rules Engine Wiki
 
-Welcome to the Rules Engine.  For purposes of documentation, it will be referred to as either Rules Engine, Re or 
+Welcome to the Rules Engine.  For purposes of documentation, it will be referred to as either Rules Engine, ReRulesEngine or 
 the Rules.Engine.
 
 ## Forget The Rest, Let's Get Started!!!!

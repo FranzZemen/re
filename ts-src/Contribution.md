@@ -26,7 +26,7 @@ TBD
 
 ### Contact The Team
 
-If you are contributing code then you're familiar with the Github pull request.  We do appreciate and want to 
+If you are contributing code then you'rulesEngine familiar with the Github pull request.  We do appreciate and want to 
 support contributors.  If you are a contributor and need support, contact:
 
     github.franzzemen@gmail.com
@@ -47,19 +47,19 @@ Make sure you have properly installed:
 Clone the full set of libraries (or the libraries you want to contribute to) that make up the Rules. Engine, making sure
 to npm install in each.
 
-    git clone https://github.com/FranzZemen/re 
-    git clone https://github.com/FranzZemen/re-application
-    git clone https://github.com/FranzZemen/re-rule-set
-    git clone https://github.com/FranzZemen/re-rule
-    git clone https://github.com/FranzZemen/re-logical-condition
-    git clone https://github.com/FranzZemen/re-condition
-    git clone https://github.com/FranzZemen/re-expression
-    git clone https://github.com/FranzZemen/re-data-type
-    git clone https://github.com/FranzZemen/re-common
-    git clone https://github.com/FranzZemen/re-standard-functions
-    git clone https://github.com/FranzZemen/re-cli
+    git clone https://github.com/FranzZemen/rulesEngine 
+    git clone https://github.com/FranzZemen/rulesEngine-application
+    git clone https://github.com/FranzZemen/rulesEngine-rule-set
+    git clone https://github.com/FranzZemen/rulesEngine-rule
+    git clone https://github.com/FranzZemen/rulesEngine-logical-condition
+    git clone https://github.com/FranzZemen/rulesEngine-condition
+    git clone https://github.com/FranzZemen/rulesEngine-expression
+    git clone https://github.com/FranzZemen/rulesEngine-data-type
+    git clone https://github.com/FranzZemen/rulesEngine-common
+    git clone https://github.com/FranzZemen/rulesEngine-standard-functions
+    git clone https://github.com/FranzZemen/rulesEngine-cli
 
-You might also want to contribute to the following, which is strictly speaking not part of the re framework but used by
+You might also want to contribute to the following, which is strictly speaking not part of the rulesEngine framework but used by
 it:
 
     git clone https://github.com/FranzZemen/app-utility

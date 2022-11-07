@@ -1,4 +1,4 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
+import {LogExecutionContext} from '@franzzemen/logger-adapter';
 import {ApplicationStringifier} from '@franzzemen/re-application';
 
 import {ReReference} from '../re-reference.js';
@@ -9,7 +9,7 @@ import {StringifyReOptions} from './stringify-re-options.js';
 export class ReStringifier {
   constructor() {
   }
-  stringify(reReference: ReReference, scope: ReScope, options?: StringifyReOptions, ec?: ExecutionContextI) {
+  stringify(reReference: ReReference, scope: ReScope, options?: StringifyReOptions, ec?: LogExecutionContext) {
     let stringified;
     // TODO stringify options
     if(reReference.refName.indexOf(' ') < 0) {

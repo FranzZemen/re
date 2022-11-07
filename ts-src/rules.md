@@ -9,7 +9,7 @@ For the remainder of this documentation the Rules Engine is referred to in this 
 ##Text Parsing
 There are several ways to initiate the top level parser.  For the purposes of this section we assume the following API
 
-    Rules.Engine.parse(remaining: string, executionContext?: ExecutionContextI): ReReference
+    Rules.Engine.parse(remaining: string, executionContext?: LogExecutionContext): ReReference
 
 This API parses a full or partial rule and returns it as a Rules.Engine Reference.  It does not load the Rules.
 Engine with the results.
@@ -30,11 +30,11 @@ Thus, in the following Condition
 it is inferred that there is a Rules.Engine and a default RuleSet (see [RuleSet](../rule-set/rule-set.md)).
 
 It is possible to load options into the Rules.Engine programmatically.  It is also possible to include those options 
-in the Rules.Engine hints.  Without options the Rules.Engine hints look like empty options with the prefix "re":
+in the Rules.Engine hints.  Without options the Rules.Engine hints look like empty options with the prefix "rulesEngine":
 
-    <<re>>
+    <<rulesEngine>>
 
-While it is perfectly legal to include <<re>> one would normally not have a reason to do so.
+While it is perfectly legal to include <<rulesEngine>> one would normally not have a reason to do so.
 
 Hints can be used to load custom elements and other settings into the rules engine.  When loaded at the 
 Rules.Engine level, these apply anywhere in the rules engine.  Note that previously loaded custom elements are not 
@@ -46,7 +46,7 @@ also be added programmatically of course).
 First the full options structure, in which everything is 'optional' can be provide:
 only include what you want:
 THIS IS NO LONGER THE RIGHT FORMAT
-    <<re options={
+    <<rulesEngine options={
         "dataTypes": [{
             "typeRef": {
                 "refName": "Stock",

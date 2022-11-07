@@ -9,8 +9,8 @@ const should = chai.should();
 
 const unreachableCode = false;
 
-describe('re tests', () => {
-  describe('re.test', () => {
+describe('rulesEngine tests', () => {
+  describe('rulesEngine.test', () => {
     it('should executeRule "ticker = "ZEM" and price > 5.0"', () => {
       const dataDomain = {
         ticker: 'ZEM',

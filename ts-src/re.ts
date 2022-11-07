@@ -1,4 +1,4 @@
-import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
+import {LogExecutionContext, LoggerAdapter} from '@franzzemen/logger-adapter';
 import {Application, ApplicationResult, isApplication} from '@franzzemen/re-application';
 import {ParserMessages, RuleElementFactory, RuleElementReference, Scope} from '@franzzemen/re-common';
 import {Rule} from '@franzzemen/re-rule';
@@ -6,7 +6,7 @@ import {RuleSet} from '@franzzemen/re-rule-set';
 import {isPromise} from 'node:util/types';
 import {ReParser} from './parser/re-parser.js';
 import {ReReference} from './re-reference.js';
-import {_mergeReOptions, ReOptions} from './scope/re-options.js';
+import {ReRulesEngine, RulesEngineOptions} from './scope/re-execution-options.js';
 import {ReScope} from './scope/re-scope.js';
 
 
@@ -19,16 +19,16 @@ export interface ReResult {
 export class Rules extends RuleElementFactory<Application> {
   static Engine = new Rules();
   scope: ReScope;
-  private options: ReOptions;
+  private options: ReRulesEngine;
 
-  private constructor(options?: ReOptions, ec?: ExecutionContextI) {
+  private constructor(options?: ReRulesEngine, ec?: LogExecutionContext) {
     super();
     // The top level structural scope is type Global of name Global
     this.scope = new ReScope(options, ec);
     this.options = options;
   }
 
-  to(ec?: ExecutionContextI): ReReference {
+  to(ec?: LogExecutionContext): ReReference {
     /*
     const rulesEngineRef: ReReference = {refName: 'Rules.Engine', options: this.options, applications: []};
     this.getApplications().forEach(application => rulesEngineRef.applications.push(application.to(ec)));
@@ -40,34 +40,34 @@ export class Rules extends RuleElementFactory<Application> {
     return isApplication(obj);
   }
 
-  register(reference: RuleElementReference<Application>, ec?: ExecutionContextI, ...params): Application {
+  register(reference: RuleElementReference<Application>, ec?: LogExecutionContext, ...params): Application {
     throw new Error('Do not use this method, use addApplication instead');
   }
 
-  unregister(refName: string, ec?: ExecutionContextI): boolean {
+  unregister(refName: string, ec?: LogExecutionContext): boolean {
     throw new Error('Do not use this method, use removeApplication instead');
   }
 
-  getRegistered(name: string, ec?: ExecutionContextI): Application {
+  getRegistered(name: string, ec?: LogExecutionContext): Application {
     const log = new LoggerAdapter(ec, 're', 're','getRegistered');
     log.warn('Do not use this method, use getApplication instead');
     return super.getRegistered(name,ec);
   }
 
-  addApplication(app: Application, ec?: ExecutionContextI) {
+  addApplication(app: Application, ec?: LogExecutionContext) {
     app.scope.reParent(this.scope);
     super.register({instanceRef: {refName: app.refName, instance: app}}, ec);
   }
 
-  getApplication(refName: string, ec?: ExecutionContextI): Application {
+  getApplication(refName: string, ec?: LogExecutionContext): Application {
     return super.getRegistered(refName, ec);
   }
 
-  getApplications(ec?: ExecutionContextI): Application [] {
+  getApplications(ec?: LogExecutionContext): Application [] {
     return this.getAllInstances();
   }
 
-  removeApplication(refName: string, ec?: ExecutionContextI) {
+  removeApplication(refName: string, ec?: LogExecutionContext) {
     const app: Application = super.getRegistered(refName, ec);
     if (app) {
       app.scope.removeParent(ec);
@@ -80,7 +80,7 @@ export class Rules extends RuleElementFactory<Application> {
    * @param dataDomain
    * @param ec
    */
-  awaitEvaluation(dataDomain: any, ec?: ExecutionContextI): ReResult | Promise<ReResult> {
+  awaitEvaluation(dataDomain: any, ec?: LogExecutionContext): ReResult | Promise<ReResult> {
     const log = new LoggerAdapter(ec, 're', 'rules', 'awaitEvaluation');
     const applicationResults: ApplicationResult[] = [];
     const applicationResultsPromises: Promise<ApplicationResult>[] = [];
@@ -118,7 +118,7 @@ export class Rules extends RuleElementFactory<Application> {
     }
   }
 
-  execute(domain: any, text: string, ec?: ExecutionContextI): ReResult | Promise<ReResult> {
+  execute(domain: any, text: string, ec?: LogExecutionContext): ReResult | Promise<ReResult> {
     const truOrPromise = this.load(text, ec);
     if(isPromise(truOrPromise)) {
       truOrPromise
@@ -131,9 +131,9 @@ export class Rules extends RuleElementFactory<Application> {
   }
 
 
-  load(text: string, ec?: ExecutionContextI): [true, ParserMessages] | Promise<[true, ParserMessages]> {
+  load(text: string, ec?: LogExecutionContext): [true, ParserMessages] | Promise<[true, ParserMessages]> {
     const parser = new ReParser();
-    let [remaining, ref, parserMessages] = parser.parse(text, {options: this.scope.options, mergeFunction: _mergeReOptions},undefined, ec);
+    let [remaining, ref, parserMessages] = parser.parse(text, {options: this.scope.options},undefined, ec);
     // The combination of the current options in scope, which was originally initialized by them, along with the merge of those
     // Into loaded options, becomes the options for this scope recreated through parsing.
     this.scope = ref.loadedScope;
@@ -154,7 +154,7 @@ export class Rules extends RuleElementFactory<Application> {
     this.repo.clear();
   }
 
-  findFirstRuleSet(ruleSetName, ec?: ExecutionContextI): RuleSet {
+  findFirstRuleSet(ruleSetName, ec?: LogExecutionContext): RuleSet {
     const applications = this.getApplications(ec);
     for (let i = 0; i < applications.length; i++) {
       const ruleSet = applications[i].getRuleSet(ruleSetName, ec);
@@ -169,7 +169,7 @@ export class Rules extends RuleElementFactory<Application> {
    * @param ruleName
    * @param ec
    */
-  findFirstRule(ruleName: string, ec?: ExecutionContextI): Rule {
+  findFirstRule(ruleName: string, ec?: LogExecutionContext): Rule {
     const applications = this.getApplications(ec);
     for (let i = 0; i < applications.length; i++) {
       const ruleSets = applications[i].getRuleSets();

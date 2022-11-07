@@ -13,7 +13,7 @@ const stringifier = new ReStringifier();
 
 const scope = new ReScope();
 
-describe('re tests', () => {
+describe('rulesEngine tests', () => {
     describe('core/application/stringifier/application-stringifier.test', () =>{
       it ('should stringify "5 = test <<ap name="Application2">> 6 < ab', done => {
         const [remaining, reReference] = parser.parse('<<ru name=Rule1>> 5 = test <<ap name="Application2">> <<ru name=Rule2>> 6 < ab');

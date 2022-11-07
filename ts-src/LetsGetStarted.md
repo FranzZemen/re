@@ -152,7 +152,7 @@ Then log output might look something like this:
     2022-10-17T02:23:10.726 INFO:
     {
       message: 'result.valid is true',
-      repo: 're',
+      repo: 'rulesEngine',
       sourceFile: 'documentation.test',
       method: 'Example 1',
       data: {}
@@ -226,7 +226,7 @@ constructs:
 
     const myRuLe = 'ticker = "ZEM" and price > 5.0'
 
-If you're storing and manipulating rules in another language, make sure to honor the internal double quotes, even if you
+If you'rulesEngine storing and manipulating rules in another language, make sure to honor the internal double quotes, even if you
 need to escape them!
 
 Moreover, the Rules Engine accepts the common whitespace codes including the space, the tab, the newline and the
@@ -537,7 +537,7 @@ This executes a specific rule expressed as text and returns the execution result
 
 The full Typescript signature of this API is:
 
-    awaitExecution = (domain: any, ruleText: string, ec?: ExecutionContextI) => RuleResult | Promise<RuleResult>;
+    awaitExecution = (domain: any, ruleText: string, ec?: LogExecutionContext) => RuleResult | Promise<RuleResult>;
 
 Meaning it is a function that takes 3 parameters, including one optional parameter, and returns either a Result
 (RuleResult) or a Promise to one.
@@ -564,7 +564,7 @@ While we did not go into detail in this Quick Start on Function Expressions, suf
 externalized capability, and thus may return Promises by design. It's entirely possible that rule execution, for
 instance is dependent on a database lookup provided by a Function Expression. Let's take our example of comparing a
 stock price; what if the stock price is not in the data domain? It's quite logical that it might be directly obtained
-from an API. We can wrap the API call and expose it as a Function Expression for re-use, passing in the ticker, which
+from an API. We can wrap the API call and expose it as a Function Expression for rulesEngine-use, passing in the ticker, which
 itself may come from the data domain:
 
     @CurrentStockPrice[ticker] > 5.0
@@ -578,7 +578,7 @@ Tip:  The Rules Engine provides a type guard, "isPromise" to quickly evaluate wh
 
 #### What Is The Execution Context
 
-The Execution Context, represented by the shape interface definition ExecutionContextI is an optional object passed to
+The Execution Context, represented by the shape interface definition LogExecutionContext is an optional object passed to
 almost all methods in the Rules Engine and supports logging, 'thread' tracing and so on. For the Rules Engine the most
 important feature is its logging definition.
 
@@ -602,10 +602,10 @@ We already covered one important Rules.Engine API:
 
 #### Execute a single Rule
 
-    awaitRuleExecution = (domain: any, ruleText: string | string[3], ec?: ExecutionContextI) 
+    awaitRuleExecution = (domain: any, ruleText: string | string[3], ec?: LogExecutionContext) 
       => RuleResult | Promise<RuleResult>
 
-    executeRule = (domain: any, ruleText: string | string[3], ec?: ExecutionContextI) => RuleResult
+    executeRule = (domain: any, ruleText: string | string[3], ec?: LogExecutionContext) => RuleResult
 
 Examples:
 
@@ -633,10 +633,10 @@ Examples:
 
 #### Execute an Application
 
-    awaitApplicationExecution = (domain: any, application: string, ec?: ExecutionContextI)
+    awaitApplicationExecution = (domain: any, application: string, ec?: LogExecutionContext)
       => ApplicationResult | Promise<ApplicationResult>
 
-    executeApplication = (domain: any, application: string, ec?: ExecutionContextI) => ApplicationResult
+    executeApplication = (domain: any, application: string, ec?: LogExecutionContext) => ApplicationResult
 
 Example using the Application and Rule Set hints:
 
@@ -654,25 +654,25 @@ Executing a named Application:
 
 #### Execute a Rules Engine Schema
 
-    awaitExecution = (domain: any, rules?: string, ec?: ExecutionContextI)
+    awaitExecution = (domain: any, rules?: string, ec?: LogExecutionContext)
       => RulesEngineREsult | Promise<RulesEngineResult>
 
-    execute = (domain: any, rules?: string, ec?: ExecutionContextI) => RulesEngineREsult
+    execute = (domain: any, rules?: string, ec?: LogExecutionContext) => RulesEngineREsult
 
 #### Add an application to the Rules.Engine schema
 
-    addApplication = (app: Application | ApplicationReference | string, ec?: ExecutionContextI);
+    addApplication = (app: Application | ApplicationReference | string, ec?: LogExecutionContext);
 
 This adds an application to the Rules.Engine schema. For the purposes of this Quick Start, assume the input is a textual
 Application construct. Application and ApplicationReference are covered elsewhere.
 
 #### Add a Rule Set to the Rules.Engine schema
 
-    addRuleSet = (appRef: string, ruleSet: RuleSet | RuleSetReference | string, ec?: ExecutionContextI);
+    addRuleSet = (appRef: string, ruleSet: RuleSet | RuleSetReference | string, ec?: LogExecutionContext);
 
 #### Add a Rule to the Rules.Engine schema
 
-    addRule = (appRef: string, ruleSetRef: string, rule: Rule | RuleReference | string, ec?: ExecutionContextI);
+    addRule = (appRef: string, ruleSetRef: string, rule: Rule | RuleReference | string, ec?: LogExecutionContext);
 
 ### Applications
 

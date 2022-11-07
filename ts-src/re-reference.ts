@@ -1,8 +1,8 @@
 import {ApplicationReference} from '@franzzemen/re-application';
 import {ScopedReference} from '@franzzemen/re-rule';
-import {ReOptions} from './scope/re-options';
+import {ReRulesEngine} from './scope/re-execution-options.js';
 
 export interface ReReference extends ScopedReference {
-  options: ReOptions;
+  options: ReRulesEngine;
   applications: ApplicationReference[];
 }
