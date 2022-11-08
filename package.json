@@ -1,9 +1,11 @@
 {
   "name": "@franzzemen/re",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "",
   "type": "module",
-  "exports": "./re.js",
+  "exports": {
+    ".": "./re.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,6 +28,7 @@
     "gulp": "^4.0.2",
     "gulp-mocha": "^8.0.0",
     "mocha": "^10.1.0",
+    "simple-git": "^3.14.1",
     "typescript": "^4.8.4"
   },
   "dependencies": {

@@ -4,10 +4,39 @@ import {createRequire} from 'module';
 import {join, dirname} from 'node:path';
 import {npmu as npmuFunc} from '@franzzemen/npmu';
 import {fileURLToPath} from 'url';
+import { simpleGit, CleanOptions } from 'simple-git';
+import {inspect} from 'util';
 
 const requireModule = createRequire(import.meta.url);
 gulpBase.init(requireModule('./package.json'), cwd() + '/tsconfig.src.json', cwd() + '/tsconfig.test.json', 100);
 gulpBase.setMainBranch('main');
+
+
+const options = {
+  baseDir: process.cwd(),
+  binary: 'git',
+  maxConcurrentProcesses: 6,
+  trimmed: false,
+};
+
+
+const git = simpleGit(options);
+
+const branches = await git.branchLocal();
+
+if(branches && branches.current) {
+  gulpBase.setMainBranch(branches.current);
+}
+/*
+console.log(inspect(branches, true, 10, true));
+
+  git.branchLocal()
+  .then(branches => {
+    console.log(inspect(branches, true, 10, true));
+  });
+
+
+ */
 
 
 export const npmu = (cb) => {
