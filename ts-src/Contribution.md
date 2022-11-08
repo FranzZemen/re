@@ -44,7 +44,7 @@ Make sure you have properly installed:
 - typescript (4.8.x+ was the earliest tested, may work on earlier versions)
 - gulp-cli (global, most recent or 2.3.0+)
 
-Clone the full set of libraries (or the libraries you want to contribute to) that make up the Rules. Engine, making sure
+Clone the full set of libraries (or the libraries you want to contribute to) that make up the RulesEngine. Engine, making sure
 to npm install in each.
 
     git clone https://github.com/FranzZemen/rulesEngine 

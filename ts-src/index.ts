@@ -1,14 +1,19 @@
-import {LogExecutionContext, LoggerAdapter} from '@franzzemen/logger-adapter';
-import {Rules} from './re.js';
 
 export * from './util/external-index.js';
-export * from './re-reference.js';
-export * from './re.js';
+export * from './rules-engine-reference.js';
+export * from './rules-engine.js';
 export * from './scope/external-index.js';
 export * from './parser/external-index.js';
 export * from './stringifier/external-index.js';
 
+import {LogExecutionContext, LoggerAdapter} from '@franzzemen/logger-adapter';
+import {Rules} from './re.js';
 
+
+
+
+
+/*
 const ec: LogExecutionContext = {
   log: {
   }
@@ -40,4 +45,4 @@ export function execute() {
 
 if(process.argv.find(arg => arg.indexOf('rule=') >= 0) !== undefined) {
   execute();
-}
+}*/

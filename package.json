@@ -1,9 +1,9 @@
 {
   "name": "@franzzemen/re",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "exports": "./re.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,3 +1,4 @@
+/*
 import {LogExecutionContext, LoggerAdapter} from '@franzzemen/logger-adapter';
 import chai from 'chai';
 import 'mocha';
@@ -51,3 +52,6 @@ describe('rulesEngine tests', () => {
     });
   });
 });
+
+
+ */

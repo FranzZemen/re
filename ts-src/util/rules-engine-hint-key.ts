@@ -1,5 +1,5 @@
 import {ApplicationHintKey} from '@franzzemen/re-application';
 
-export class ReHintKey extends ApplicationHintKey {
+export class RulesEngineHintKey extends ApplicationHintKey {
 
 }

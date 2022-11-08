@@ -1,10 +1,10 @@
 - [ReadMe](../ReadMe.md)
 - [Wiki Index](./WikiIndex.md)
 
-# @franzzemen/rulesEngine Rules Engine Wiki
+# @franzzemen/rulesEngine RulesEngine Engine Wiki
 
-Welcome to the Rules Engine.  For purposes of documentation, it will be referred to as either Rules Engine, ReRulesEngine or 
-the Rules.Engine.
+Welcome to the RulesEngine Engine.  For purposes of documentation, it will be referred to as either RulesEngine Engine, ReRulesEngine or 
+the RulesEngine.Engine.
 
 ## Forget The Rest, Let's Get Started!!!!
 
@@ -37,7 +37,7 @@ If interested to be a contributor see [this](./Contribution.md)
 
 [comment]: # (Move this somewhere else)
 
-[comment]: # (Move this somewhere else: The Rules.Engine is a text interfaced rules engine, the format referred to as 
+[comment]: # (Move this somewhere else: The RulesEngine.Engine is a text interfaced rules engine, the format referred to as 
 the Text Format. This means that the
 primary convenient way to manipulate it from code or node command line, or other cli is to leverage it's main api with
 text based rules.)

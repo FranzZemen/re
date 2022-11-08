@@ -71,15 +71,15 @@ export const rulesEngineOptionsSchemaWrapper = {
 };
 
 const reRulesEngineSchema = {
-  common: commonOptionsSchemaWrapper,
-  data: dataTypeOptionsSchemaWrapper,
-  expression: expressionOptionsSchemaWrapper,
-  condition: conditionOptionsSchemaWrapper,
-  logicalCondition: logicalConditionOptionsSchemaWrapper,
-  rule: ruleOptionsSchemaWrapper,
-  ruleSet: ruleSetOptionsSchemaWrapper,
-  application: applicationOptionsSchemaWrapper,
-  rulesEngine: rulesEngineOptionsSchemaWrapper
+  're-common': commonOptionsSchemaWrapper,
+  're-data-type': dataTypeOptionsSchemaWrapper,
+  're-expression': expressionOptionsSchemaWrapper,
+  're-condition': conditionOptionsSchemaWrapper,
+  're-logical-condition': logicalConditionOptionsSchemaWrapper,
+  're-rule': ruleOptionsSchemaWrapper,
+  're-ruleset': ruleSetOptionsSchemaWrapper,
+  're-application': applicationOptionsSchemaWrapper,
+  're-rules-engine': rulesEngineOptionsSchemaWrapper
 };
 
 export const reRulesEngineSchemaWrapper = {
@@ -105,8 +105,8 @@ export const rulesEngineExecutionContextSchemaWrapper = {
 };
 
 
-export function isRulesEngineExecutionContext(options: any | RulesEngineExecutionContext): options is RulesEngineExecutionContext {
-  return options && 're' in options; // Faster than validate
+export function isRulesExecutionContext(options: any | RulesEngineExecutionContext): options is RulesEngineExecutionContext {
+  return options && 're' in options && 'rules-engine' in options.re; // Faster than validate
 }
 
 const check = (new Validator({useNewCustomCheckerFunction: true})).compile(rulesEngineExecutionContextSchema);

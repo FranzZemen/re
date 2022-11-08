@@ -6,7 +6,7 @@
 
 Installing @franzzemen will install subcomponents, including as of now:
 
-    @franzzemen/rulesEngine                        All about the Rules Engine
+    @franzzemen/rulesEngine                        All about the RulesEngine Engine
     @franzzemen/rulesEngine-application            All About Applications
     @franzzemen/rulesEngine-rule-set               All about Rule Sets
     @franzzemen/rulesEngine-rule                   All about Rule

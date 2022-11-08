@@ -24,7 +24,7 @@ CommonJS alternative to ES module loading:
 
 For Typescript type checking, import types in local files, for example:
 
-    type Rules = import('@franzzemen/es').Rules.
+    type RulesEngine = import('@franzzemen/es').RulesEngine.
 
 This will not be transpiled to generated javascript code; it will however provide you with type checking, and you don't
 have to account for the asynchronicity (promise) associated with import() for types.
@@ -34,12 +34,12 @@ For actual working code, to incorporate promises for example:
     // Regular require declarations
     const _ = require('lodash');
     // ES Type imports
-    type Rules = import('@franzzemen/es').Rules;
+    type RulesEngine = import('@franzzemen/es').RulesEngine;
     // Dynamic imports
     import('@franzzemen/rulesEngine')
       .then(rulesEngine => {
-        const Rules = rulesEngine.Rules;
-        Rules.Engine.load(...);
+        const RulesEngine = rulesEngine.RulesEngine;
+        RulesEngine.Engine.load(...);
       });
 
 A working example is provided

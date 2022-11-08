@@ -4,7 +4,7 @@
 # Read Me
 
 The @franzzemen/rulesEngine framework is a rules engine with a text based interface for maximum usability, and referred in the
-documentation as the Rules Engine. It can also be referred to by its singleton name ReRulesEngine.Engine.
+documentation as the RulesEngine Engine. It can also be referred to by its singleton name ReRulesEngine.Engine.
 
 ## Pre-requisites
 

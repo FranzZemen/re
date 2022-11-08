@@ -1,8 +1,11 @@
 import 'mocha';
 import {isPromise} from 'node:util/types'
 import chai from 'chai';
-import {Rules, RulesEngineExecutionContext, validate} from '../publish/index.js';
-import {inspect} from 'node:util';
+import {Rules} from '../publish/re.js';
+
+
+//import {Rules, RulesEngineExecutionContext, validate} from '../publish/index.js';
+//import {inspect} from 'node:util';
 
 const expect = chai.expect;
 const should = chai.should();
@@ -12,6 +15,11 @@ const unreachableCode = false;
 describe('re tests', () => {
   describe('re.test', () => {
     describe('general', () => {
+      it('should do stuff', () =>{
+        let rules = new Rules();
+        rules.engine.load();
+      });
+      /*
       it('should executeRule "ticker = "ZEM" and price > 5.0"', () => {
         const dataDomain = {
           ticker: 'ZEM',
@@ -39,10 +47,11 @@ describe('re tests', () => {
       })
       /*
       it('should fail "hello"', () => {
-        Rules.Engine.awaitExecution({},'hello');
+        RulesEngine.Engine.awaitExecution({},'hello');
       })
 
        */
+      /*
     });
     describe('RulesEngineExecutionContext tests', () => {
       it('should validate', () => {
@@ -55,6 +64,8 @@ describe('re tests', () => {
           console.log(JSON.stringify(re));
         }
       });
+
+       */
     });
   });
 })
