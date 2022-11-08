@@ -15,9 +15,9 @@ export abstract class Rules {
 
 export class Engine extends Rules {
   static {
-    Rules.Engine = new Engine();
+    Rules.Engine = new Engine(false);
   }
-  protected constructor() {
+  protected constructor(private instance = true) {
     super();
   }
   static load(): Engine {
@@ -26,8 +26,12 @@ export class Engine extends Rules {
     return engine.load();
   }
   load(): Engine {
-    console.log('Dynamic load');
-    return this;
+    if(this.instance) {
+      console.log('Dynamic load');
+      return this;
+    } else {
+      return Engine.load();
+    }
   }
 }
 
