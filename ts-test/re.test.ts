@@ -16,8 +16,8 @@ describe('re tests', () => {
   describe('re.test', () => {
     describe('general', () => {
       it('should do stuff', () =>{
-        let rules = new Rules();
-        rules.engine.load();
+        const engine = Rules.Engine.load();
+        engine.load();
       });
       /*
       it('should executeRule "ticker = "ZEM" and price > 5.0"', () => {
